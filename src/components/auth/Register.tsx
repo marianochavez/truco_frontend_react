@@ -10,7 +10,6 @@ import {
   Button,
   Heading,
   Text,
-  Link as LinkChakra,
 } from "@chakra-ui/react";
 import {Link, useNavigate} from "react-router-dom";
 import {useContext, useState} from "react";
@@ -147,7 +146,7 @@ export default function Register() {
                 <Stack pt={6}>
                   <Link to="/login">
                     <Text align={"center"}>
-                      Tienes cuenta? <LinkChakra color={"blue.400"}>Ingresar</LinkChakra>
+                      Tienes cuenta? <span style={{color: "blue"}}>Ingresar</span>
                     </Text>
                   </Link>
                 </Stack>

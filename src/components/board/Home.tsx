@@ -1,126 +1,146 @@
 import {useContext, useEffect, useState} from "react";
 import {Link, useLocation} from "react-router-dom";
+import {Box, Button, Input, Select, Stack, Text, VStack} from "@chakra-ui/react";
 
 import {PlayerContext} from "../../providers/PlayerProvider";
-import {BoardContext} from "../../providers/GameProvider";
+import {GameContext} from "../../providers/GameProvider";
 import {useForm} from "../../hooks/useForm";
 import Appbar from "../ui/Appbar";
 
 type TokenForm = {
-  boardToken: string;
+  boardId: number;
+  playerQuantity: any;
 };
 
 export const Home = () => {
   const currentPath = useLocation().pathname;
   const [formValues, handleInputChange] = useForm({
-    boardToken: "",
+    boardId: 0,
+    playerQuantity: 0,
   } as TokenForm);
-  const {boardToken} = formValues as TokenForm;
+  const {boardId, playerQuantity} = formValues as TokenForm;
   const [error, setError] = useState(false);
   const {player, isLogged, logout} = useContext(PlayerContext);
   const {
-    board,
-    isBoardCreated,
-    isBoardJoined,
-    leaveBoard,
-    clearBoard,
-    userCreateBoard,
-    userJoinGame,
-    checkBoard,
-  } = useContext(BoardContext);
+    game,
+    isGameCreated,
+    isGameJoined,
+    leave,
+    clearGame,
+    playerCreateGame,
+    playerJoinGame,
+    checkGame,
+  } = useContext(GameContext);
 
-  const handleCreateBoard = async () => {
-    await userCreateBoard(player.token);
+  const handleCreateGame = async () => {
+    if (playerQuantity === 0) return;
+
+    await playerCreateGame(player.token, parseInt(playerQuantity));
   };
 
   const handleLogout = () => {
-    leaveBoard(player.token);
-    clearBoard();
+    leave(player.token);
+    clearGame();
     logout();
   };
 
-  const handleJoinBoard = async () => {
-    if (boardToken.length === 0) return;
-    const res = await userJoinGame(player.token, boardToken.trim());
+  const handleJoinGame = async () => {
+    if (boardId === 0) return;
+    const res = await playerJoinGame(player.token, boardId);
 
-    !res ? setError(true) : setError(false);
-    handleCheckBoard();
+    res.status === "OK" ? setError(false) : setError(true);
+
+    handleCheckGame();
   };
 
-  const handleCheckBoard = async () => {
-    await checkBoard(player.token);
+  const handleCheckGame = async () => {
+    await checkGame(player.token);
   };
 
   // CHECK BOARD EVERY 5 MILISECONDS
   useEffect(() => {
-    if (isLogged && isBoardCreated) {
+    if (isLogged && isGameCreated) {
       const interval = setInterval(() => {
-        handleCheckBoard();
+        handleCheckGame();
       }, 500);
 
       return () => clearInterval(interval);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isBoardCreated]);
+  }, [isGameCreated]);
 
   return (
     <>
       <Appbar />
-      <div
-        className="container animate__animated animate__fadeIn animate__slow"
-        style={{padding: "2em"}}
-      >
+      <VStack marginTop={5} spacing={2}>
+        <Text fontSize={"4xl"}>Bienvenido {player.name}!</Text>
+        {/* LOGIN */}
         {!isLogged && (
-          <Link className="nes-btn is-warning" to="/login">
-            Iniciar sesión
-          </Link>
+          <Box>
+            <Link to="/login">
+              <Button colorScheme={"facebook"}>Iniciar sesión</Button>
+            </Link>
+          </Box>
         )}
-        {isLogged && !isBoardCreated && !isBoardJoined && currentPath == "/" && (
-          <div className="container">
-            <label htmlFor="token_field">Unirse a partida</label>
-            <input
-              className={`nes-input ${error && "animate__animated animate__shakeX is-error"}`}
-              id="token_field"
-              name="boardToken"
-              placeholder="Ingresar código"
-              type="text"
-              value={boardToken}
+        {/* CREAR PARTIDA */}
+        {isLogged && !isGameCreated && !isGameJoined && currentPath === "/" && (
+          <Stack direction={["column", "row"]}>
+            <Select
+              name="playerQuantity"
+              placeholder="Cantidad de jugadores"
+              value={playerQuantity}
+              onChange={handleInputChange as React.ChangeEventHandler<any>}
+            >
+              <option value={2}>2</option>
+              <option value={4}>4</option>
+              <option value={6}>6</option>
+            </Select>
+            <Button colorScheme={"purple"} onClick={handleCreateGame}>
+              Crear partida
+            </Button>
+          </Stack>
+        )}
+        {/* MOSTRAR ID DE PARTIDA CREADA */}
+        {isLogged && !isGameJoined && isGameCreated && (
+          <Box border={"2px"} padding={2}>
+            <Text color={"yellow.800"}>ID de la partida: {`${game.id}`}</Text>
+            <Text>Esperando jugadores...</Text>
+          </Box>
+        )}
+        {/* UNIRSE A PARTIDA */}
+        {isLogged && !isGameCreated && !isGameJoined && currentPath === "/" && (
+          <Box alignItems="center" display="flex" justifyContent="center" maxW={200}>
+            <Input
+              borderColor={error ? "red.500" : "white"}
+              id="id_field"
+              name="boardId"
+              type="number"
+              value={boardId}
               onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
             />
-            <button className="nes-btn is-warning" onClick={handleJoinBoard}>
+            <Button colorScheme={"green"} marginLeft={2} onClick={handleJoinGame}>
               Unirme
-            </button>
-          </div>
+            </Button>
+          </Box>
         )}
-        {isLogged && !isBoardJoined && isBoardCreated && (
-          <div className="nes-container container animate__animated animate__rubberBand">
-            <h4>Código del juego:</h4>
-            <p style={{color: "red"}}>
-              <span>
-                <i className="nes-icon coin " />
-              </span>{" "}
-              {`${board.token}`}
-              <span /> <i className="nes-icon coin " />
-            </p>
-            <p>Esperando jugador 2...</p>
-          </div>
+        {}
+        {/* IR AL JUEGO */}
+        {isGameCreated && isGameJoined && currentPath === "/" && (
+          <Box>
+            <Link to="/game">
+              <Button colorScheme={"purple"}>Ir al juego</Button>
+            </Link>
+          </Box>
         )}
-        {isLogged && !isBoardCreated && currentPath == "/" && (
-          <button className="nes-btn is-success" onClick={handleCreateBoard}>
-            Crear juego
-          </button>
-        )}
-        {isBoardCreated && isBoardJoined && currentPath === "/" && (
-          <Link className="nes-btn is-warning" to="/game">
-            Ir al juego
-          </Link>
-        )}
+        {/* LOGOUT */}
         {isLogged && currentPath === "/" && (
-          <button className="nes-btn is-error" onClick={() => handleLogout()}>
-            {`Salir ${player?.name || "jugador 1"}`}
-          </button>
+          <Box>
+            <Button colorScheme={"yellow"} onClick={handleLogout}>
+              Cerrar sesión
+            </Button>
+          </Box>
         )}
-      </div>
+      </VStack>
     </>
   );
 };

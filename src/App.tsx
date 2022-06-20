@@ -1,14 +1,14 @@
-import {UserProvider} from "./providers/PlayerProvider";
-import {BoardProvider} from "./providers/GameProvider";
+import {PlayerProvider} from "./providers/PlayerProvider";
+import {GameProvider} from "./providers/GameProvider";
 import {AppRouter} from "./routers/AppRouter";
 
 function App() {
   return (
-    <UserProvider>
-      <BoardProvider>
+    <PlayerProvider>
+      <GameProvider>
         <AppRouter />
-      </BoardProvider>
-    </UserProvider>
+      </GameProvider>
+    </PlayerProvider>
   );
 }
 

@@ -2,7 +2,7 @@ import {BrowserRouter, Route, Routes, Link} from "react-router-dom";
 
 import Login from "../components/auth/Login";
 import Register from "../components/auth/Register";
-import {Board} from "../components/board/Board";
+import {Game} from "../components/board/Game";
 import {Home} from "../components/board/Home";
 
 export const AppRouter = () => {
@@ -10,7 +10,7 @@ export const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<Home />} path="/">
-          <Route element={<Board />} path="game" />
+          <Route element={<Game />} path="game" />
         </Route>
         <Route element={<Login />} path="/login" />
         <Route element={<Register />} path="/register" />

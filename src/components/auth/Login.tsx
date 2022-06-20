@@ -5,7 +5,6 @@ import {
   FormLabel,
   Input,
   Stack,
-  Link as LinkChakra,
   Button,
   Heading,
   Text,
@@ -99,7 +98,7 @@ export default function Login() {
                   >
                     <Link to="/register">
                       <Text align={"center"}>
-                        No tienes cuenta? <LinkChakra color={"blue.400"}>Registrarme</LinkChakra>
+                        No tienes cuenta? <span style={{color: "blue"}}>Registrarme</span>
                       </Text>
                     </Link>
                   </Stack>

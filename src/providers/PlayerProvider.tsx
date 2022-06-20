@@ -41,8 +41,8 @@ export const PlayerContext = createContext<PlayerContext>({
   register: () => Promise.resolve({status: "ERROR", data: ""}),
 });
 
-export const UserProvider = ({children}: Props) => {
-  const [player, setPlayer] = useState<Player>(JSON.parse(localStorage.getItem("player") || ""));
+export const PlayerProvider = ({children}: Props) => {
+  const [player, setPlayer] = useState<Player>(JSON.parse(localStorage.getItem("player") || "{}"));
   const [isLogged, setIsLogged] = useState<boolean>(
     player?.id === 0 || Object.entries(player).length === 0 ? false : true,
   );

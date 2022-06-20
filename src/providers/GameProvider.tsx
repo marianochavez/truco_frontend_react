@@ -124,7 +124,6 @@ export const GameProvider = ({children}: Props) => {
 
     if (res.status === "OK") {
       setGame(res.data);
-      setIsGameJoined(true);
       setIsGameCreated(true);
     } else {
       console.log(res.data);
