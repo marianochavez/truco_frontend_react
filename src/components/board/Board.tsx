@@ -1,7 +1,7 @@
 import {useContext, useEffect} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
 
-import {BoardContext} from "../../providers/BoardProvider";
+import {BoardContext} from "../../providers/GameProvider";
 import {PlayerContext} from "../../providers/PlayerProvider";
 
 import {Square} from "./Square";

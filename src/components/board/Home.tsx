@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from "react";
 import {Link, useLocation} from "react-router-dom";
 
 import {PlayerContext} from "../../providers/PlayerProvider";
-import {BoardContext} from "../../providers/BoardProvider";
+import {BoardContext} from "../../providers/GameProvider";
 import {useForm} from "../../hooks/useForm";
 import Appbar from "../ui/Appbar";
 

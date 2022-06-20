@@ -1,5 +1,5 @@
 import {UserProvider} from "./providers/PlayerProvider";
-import {BoardProvider} from "./providers/BoardProvider";
+import {BoardProvider} from "./providers/GameProvider";
 import {AppRouter} from "./routers/AppRouter";
 
 function App() {
