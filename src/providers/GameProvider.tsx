@@ -15,12 +15,12 @@ interface Game {
   status: string;
   playerQuantity: number;
   round: number;
-  player1: PlayerGame;
-  player2: PlayerGame;
-  player3: PlayerGame;
-  player4: PlayerGame;
-  player5: PlayerGame;
-  player6: PlayerGame;
+  player_1: PlayerGame;
+  player_2: PlayerGame;
+  player_3: PlayerGame;
+  player_4: PlayerGame;
+  player_5: PlayerGame;
+  player_6: PlayerGame;
 }
 
 interface GameContext {
@@ -47,27 +47,27 @@ export const GameContext = createContext<GameContext>({
     status: "",
     playerQuantity: 0,
     round: 0,
-    player1: {
+    player_1: {
       username: "",
       cards: [],
     },
-    player2: {
+    player_2: {
       username: "",
       cards: [],
     },
-    player3: {
+    player_3: {
       username: "",
       cards: [],
     },
-    player4: {
+    player_4: {
       username: "",
       cards: [],
     },
-    player5: {
+    player_5: {
       username: "",
       cards: [],
     },
-    player6: {
+    player_6: {
       username: "",
       cards: [],
     },
@@ -141,27 +141,27 @@ export const GameProvider = ({children}: Props) => {
       status: "",
       round: 0,
       playerQuantity: 0,
-      player1: {
+      player_1: {
         username: "",
         cards: [],
       },
-      player2: {
+      player_2: {
         username: "",
         cards: [],
       },
-      player3: {
+      player_3: {
         username: "",
         cards: [],
       },
-      player4: {
+      player_4: {
         username: "",
         cards: [],
       },
-      player5: {
+      player_5: {
         username: "",
         cards: [],
       },
-      player6: {
+      player_6: {
         username: "",
         cards: [],
       },

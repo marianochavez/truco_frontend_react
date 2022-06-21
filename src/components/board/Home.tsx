@@ -73,7 +73,7 @@ export const Home = () => {
     <>
       <Appbar />
       <VStack marginTop={5} spacing={2}>
-        <Text fontSize={"4xl"}>Bienvenido {player.name}!</Text>
+        {currentPath === "/" && <Text fontSize={"4xl"}>Bienvenido {player.name}!</Text>}
         {/* LOGIN */}
         {!isLogged && (
           <Box>
