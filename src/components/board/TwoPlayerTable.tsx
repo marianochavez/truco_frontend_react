@@ -1,4 +1,5 @@
-import {Box, Button, Flex, Grid, GridItem, HStack} from "@chakra-ui/react";
+import {Box, Button, Flex, Grid, GridItem, HStack, Text} from "@chakra-ui/react";
+import {AiOutlineUser} from "react-icons/ai";
 
 import {Game} from "../../providers/GameProvider";
 import {Player} from "../../providers/PlayerProvider";
@@ -25,8 +26,18 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
           marginTop={2}
           templateColumns="repeat(6, 1fr)"
         >
-          <GridItem bg="yellow" colSpan={1} rowSpan={1} />
-          <GridItem bg="red" colSpan={4} rowSpan={1}>
+          <GridItem colSpan={1} rowSpan={1} />
+          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={4} rowSpan={1}>
+            <Text
+              alignContent={"center"}
+              color={"orange.200"}
+              display={"flex"}
+              fontSize={"2xl"}
+              justifyContent={"center"}
+            >
+              <AiOutlineUser fontSize="2rem" />
+              {game.player_2.username}
+            </Text>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Box p={4}>
                 {game.player_2.played_cards[0] ? (
@@ -63,11 +74,10 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
               </Box>
             </Flex>
           </GridItem>
-          <GridItem bg="yellow" colSpan={1} rowSpan={1} />
+          <GridItem colSpan={1} rowSpan={1} />
 
           <GridItem
             alignItems={"center"}
-            bg="yellow"
             colSpan={6}
             display={"flex"}
             justifyContent={"center"}
@@ -78,8 +88,8 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
             </Button>
           </GridItem>
 
-          <GridItem bg="yellow" colSpan={1} rowSpan={1} />
-          <GridItem bg="red" colSpan={4} rowSpan={1}>
+          <GridItem colSpan={1} rowSpan={1} />
+          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={4} rowSpan={1}>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Box p={4}>
                 {game.player_1.played_cards[0] ? (
@@ -115,13 +125,28 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
                 )}
               </Box>
             </Flex>
+            <Text
+              alignContent={"center"}
+              color={"orange.200"}
+              display={"flex"}
+              fontSize={"2xl"}
+              justifyContent={"center"}
+            >
+              <AiOutlineUser fontSize="2rem" />
+              {game.player_1.username}
+            </Text>
           </GridItem>
-          <GridItem bg="yellow" colSpan={1} rowSpan={1} />
+          <GridItem colSpan={1} rowSpan={1} />
         </Grid>
       </Box>
 
       <Box alignContent={"center"} display={"flex"} justifyContent={"center"} p={4}>
-        <HStack>
+        <HStack bg={"orange.300"} border={"2px"} borderRadius={"5px"} p={3}>
+          {currentPlayer.cards.length === 0 ? (
+            <Text fontWeight={"bold"}>Sin cartas</Text>
+          ) : (
+            <Text fontWeight={"bold"}>Mis cartas</Text>
+          )}
           <Box>
             {currentPlayer.cards[0]?.length > 0 && (
               <Card

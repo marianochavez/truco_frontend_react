@@ -14,17 +14,29 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  VStack,
+  Avatar,
+  HStack,
 } from "@chakra-ui/react";
 import {HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon} from "@chakra-ui/icons";
 import {useContext} from "react";
 import {Link as LinkRouter, Outlet, useLocation} from "react-router-dom";
+import {AiOutlineUser} from "react-icons/ai";
 
 import {PlayerContext} from "../../providers/PlayerProvider";
+import {GameContext} from "../../providers/GameProvider";
 
 export default function Appbar() {
   const {isOpen, onToggle} = useDisclosure();
-  const {isLogged} = useContext(PlayerContext);
+  const {clearGame, leave} = useContext(GameContext);
+  const {player, isLogged, logout} = useContext(PlayerContext);
   const currentPath = useLocation().pathname;
+
+  const handleLogout = () => {
+    leave(player.token);
+    clearGame();
+    logout();
+  };
 
   return (
     <>
@@ -85,6 +97,16 @@ export default function Appbar() {
               </LinkRouter>
             </Stack>
           )}
+
+          {isLogged && (
+            <HStack>
+              <Avatar bg="green.300" icon={<AiOutlineUser fontSize="1.5rem" />} size={"sm"} />
+              <Text fontWeight={"bold"}>{player.username}</Text>
+              <Button colorScheme={"orange"} variant={"ghost"} onClick={handleLogout}>
+                Salir
+              </Button>
+            </HStack>
+          )}
         </Flex>
 
         <Collapse animateOpacity in={isOpen}>
@@ -107,19 +129,20 @@ const DesktopNav = () => {
         <Box key={navItem.label}>
           <Popover placement={"bottom-start"} trigger={"hover"}>
             <PopoverTrigger>
-              <Link
-                _hover={{
-                  textDecoration: "none",
-                  color: linkHoverColor,
-                }}
-                color={linkColor}
-                fontSize={"sm"}
-                fontWeight={500}
-                href={navItem.href ?? "#"}
-                p={2}
-              >
-                {navItem.label}
-              </Link>
+              <LinkRouter to={navItem.href ?? "#"}>
+                <Text
+                  _hover={{
+                    textDecoration: "none",
+                    color: linkHoverColor,
+                  }}
+                  color={linkColor}
+                  fontSize={"sm"}
+                  fontWeight={500}
+                  p={2}
+                >
+                  {navItem.label}
+                </Text>
+              </LinkRouter>
             </PopoverTrigger>
 
             {navItem.children && (
@@ -158,7 +181,7 @@ const DesktopSubNav = ({label, href, subLabel}: NavItem) => {
       <Stack align={"center"} direction={"row"}>
         <Box>
           <Text _groupHover={{color: "pink.400"}} fontWeight={500} transition={"all .3s ease"}>
-            {label}
+            {label}asd
           </Text>
           <Text fontSize={"sm"}>{subLabel}</Text>
         </Box>
@@ -193,29 +216,30 @@ const MobileNavItem = ({label, children, href}: NavItem) => {
 
   return (
     <Stack spacing={4} onClick={children && onToggle}>
-      <Flex
-        _hover={{
-          textDecoration: "none",
-        }}
-        align={"center"}
-        as={Link}
-        href={href ?? "#"}
-        justify={"space-between"}
-        py={2}
-      >
-        <Text color={useColorModeValue("gray.600", "gray.200")} fontWeight={600}>
-          {label}
+      <LinkRouter to={href ?? "#"}>
+        <Text
+          _hover={{
+            textDecoration: "none",
+          }}
+          align={"center"}
+          as={Link}
+          justify={"space-between"}
+          py={2}
+        >
+          <Text color={useColorModeValue("gray.600", "gray.200")} fontWeight={600}>
+            {label}
+          </Text>
+          {children && (
+            <Icon
+              as={ChevronDownIcon}
+              h={6}
+              transform={isOpen ? "rotate(180deg)" : ""}
+              transition={"all .25s ease-in-out"}
+              w={6}
+            />
+          )}
         </Text>
-        {children && (
-          <Icon
-            as={ChevronDownIcon}
-            h={6}
-            transform={isOpen ? "rotate(180deg)" : ""}
-            transition={"all .25s ease-in-out"}
-            w={6}
-          />
-        )}
-      </Flex>
+      </LinkRouter>
 
       <Collapse animateOpacity in={isOpen} style={{marginTop: "0!important"}}>
         <Stack
