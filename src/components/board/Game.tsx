@@ -25,9 +25,9 @@ export const Game = () => {
     return <Navigate replace to="/" />;
   }
 
-  if (game.player_quantity === 6) {
+  if (game.player_quantity === "Six") {
     return <SixPlayerTable />;
-  } else if (game.player_quantity === 4) {
+  } else if (game.player_quantity === "Fourth") {
     return (
       <FourthPlayerTable
         currentPl={currentPlayer}

@@ -16,7 +16,7 @@ export interface Game {
   id: number;
   cards: string[];
   status: string;
-  player_quantity: number;
+  player_quantity: string;
   round: number;
   player_1: PlayerGame;
   player_2: PlayerGame;
@@ -30,7 +30,6 @@ interface GameContext {
   game: Game;
   isGameCreated: boolean;
   isGameJoined: boolean;
-  playerQuantity: number;
   currentPlayer: string;
   clearGame: () => void;
   leave: (token: string) => Promise<Response>;
@@ -50,7 +49,7 @@ export const GameContext = createContext<GameContext>({
     id: 0,
     cards: [],
     status: "",
-    player_quantity: 0,
+    player_quantity: "",
     round: 0,
     player_1: {
       username: "",
@@ -85,7 +84,6 @@ export const GameContext = createContext<GameContext>({
   },
   isGameCreated: false,
   isGameJoined: false,
-  playerQuantity: 0,
   currentPlayer: "",
   clearGame: () => {},
   leave: () => Promise.resolve({status: "ERROR", data: ""}),
@@ -105,7 +103,6 @@ export const GameProvider = ({children}: Props) => {
   const [isGameJoined, setIsGameJoined] = useState<boolean>(
     (game.status === "Playing" ? true : false) || false,
   );
-  const [playerQuantity, setPlayerQuantity] = useState<number>(game.player_quantity || 0);
   const [currentPlayer, setCurrentPlayer] = useState<string>(
     localStorage.getItem("currentPlayer") || "",
   );
@@ -138,7 +135,6 @@ export const GameProvider = ({children}: Props) => {
     if (res.status === "OK") {
       setGame(res.data);
       setIsGameCreated(true);
-      setPlayerQuantity(playerQuantity);
       setCurrentPlayer(checkCurrentPlayer(res.data));
     } else {
       console.log(res.data);
@@ -169,7 +165,7 @@ export const GameProvider = ({children}: Props) => {
       cards: [],
       status: "",
       round: 0,
-      player_quantity: 0,
+      player_quantity: "",
       player_1: {
         username: "",
         cards: [],
@@ -201,7 +197,6 @@ export const GameProvider = ({children}: Props) => {
         played_cards: [],
       },
     });
-    setPlayerQuantity(0);
   };
 
   const leave = async (token: string) => {
@@ -278,7 +273,6 @@ export const GameProvider = ({children}: Props) => {
         game,
         isGameCreated,
         isGameJoined,
-        playerQuantity,
         currentPlayer,
         clearGame,
         leave,
