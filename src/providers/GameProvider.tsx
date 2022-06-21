@@ -1,19 +1,22 @@
 /* eslint-disable no-console */
-import {createContext, useEffect, useState} from "react";
+import {createContext, useEffect, useState, useContext} from "react";
 
 import {Response} from "../helpers/authApi";
-import {createGame, joinGame, leaveGame, dealCards, showGame} from "../helpers/boardApi";
+import {createGame, joinGame, leaveGame, dealCards, showGame, playCard} from "../helpers/boardApi";
 
-interface PlayerGame {
+import {PlayerContext} from "./PlayerProvider";
+
+export interface PlayerGame {
   username: string;
   cards: string[];
+  played_cards: string[];
 }
 
-interface Game {
+export interface Game {
   id: number;
   cards: string[];
   status: string;
-  playerQuantity: number;
+  player_quantity: number;
   round: number;
   player_1: PlayerGame;
   player_2: PlayerGame;
@@ -28,10 +31,12 @@ interface GameContext {
   isGameCreated: boolean;
   isGameJoined: boolean;
   playerQuantity: number;
+  currentPlayer: string;
   clearGame: () => void;
   leave: (token: string) => Promise<Response>;
   playerCreateGame: (token: string, playerQuantity: number) => Promise<Response>;
-  playerJoinGame: (token: string, isBoard: number) => Promise<Response>;
+  playerJoinGame: (token: string, idBoard: number) => Promise<Response>;
+  playerPlayCard: (card: string) => Promise<Response>;
   checkGame: (token: string) => Promise<Response>;
   deal: (idBoard: number, token: string) => Promise<Response>;
 }
@@ -45,53 +50,65 @@ export const GameContext = createContext<GameContext>({
     id: 0,
     cards: [],
     status: "",
-    playerQuantity: 0,
+    player_quantity: 0,
     round: 0,
     player_1: {
       username: "",
       cards: [],
+      played_cards: [],
     },
     player_2: {
       username: "",
       cards: [],
+      played_cards: [],
     },
     player_3: {
       username: "",
       cards: [],
+      played_cards: [],
     },
     player_4: {
       username: "",
       cards: [],
+      played_cards: [],
     },
     player_5: {
       username: "",
       cards: [],
+      played_cards: [],
     },
     player_6: {
       username: "",
       cards: [],
+      played_cards: [],
     },
   },
   isGameCreated: false,
   isGameJoined: false,
   playerQuantity: 0,
+  currentPlayer: "",
   clearGame: () => {},
   leave: () => Promise.resolve({status: "ERROR", data: ""}),
   playerCreateGame: () => Promise.resolve({status: "ERROR", data: ""}),
   playerJoinGame: () => Promise.resolve({status: "ERROR", data: ""}),
+  playerPlayCard: () => Promise.resolve({status: "ERROR", data: ""}),
   checkGame: () => Promise.resolve({status: "ERROR", data: ""}),
   deal: () => Promise.resolve({status: "ERROR", data: ""}),
 });
 
 export const GameProvider = ({children}: Props) => {
   const [game, setGame] = useState<Game>(JSON.parse(localStorage.getItem("game") || "{}"));
+  const {player} = useContext(PlayerContext);
   const [isGameCreated, setIsGameCreated] = useState<boolean>(
     game.id === 0 || Object.entries(game).length === 0 ? false : true,
   );
   const [isGameJoined, setIsGameJoined] = useState<boolean>(
     (game.status === "Playing" ? true : false) || false,
   );
-  const [playerQuantity, setPlayerQuantity] = useState<number>(game.playerQuantity || 0);
+  const [playerQuantity, setPlayerQuantity] = useState<number>(game.player_quantity || 0);
+  const [currentPlayer, setCurrentPlayer] = useState<string>(
+    localStorage.getItem("currentPlayer") || "",
+  );
 
   useEffect(() => {
     const gameData = JSON.parse(localStorage.getItem("game") || "{}");
@@ -103,6 +120,16 @@ export const GameProvider = ({children}: Props) => {
     localStorage.setItem("game", JSON.stringify(game));
   }, [game]);
 
+  useEffect(() => {
+    const current = localStorage.getItem("currentPlayer") || "";
+
+    if (current) setCurrentPlayer(current);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("currentPlayer", currentPlayer);
+  }, [currentPlayer]);
+
   const playerCreateGame = async (token: string, playerQuantity: number) => {
     if (isGameCreated) return {status: "ERROR", data: "Game already created"};
 
@@ -112,6 +139,7 @@ export const GameProvider = ({children}: Props) => {
       setGame(res.data);
       setIsGameCreated(true);
       setPlayerQuantity(playerQuantity);
+      setCurrentPlayer(checkCurrentPlayer(res.data));
     } else {
       console.log(res.data);
     }
@@ -125,6 +153,7 @@ export const GameProvider = ({children}: Props) => {
     if (res.status === "OK") {
       setGame(res.data);
       setIsGameCreated(true);
+      setCurrentPlayer(checkCurrentPlayer(res.data));
     } else {
       console.log(res.data);
     }
@@ -140,30 +169,36 @@ export const GameProvider = ({children}: Props) => {
       cards: [],
       status: "",
       round: 0,
-      playerQuantity: 0,
+      player_quantity: 0,
       player_1: {
         username: "",
         cards: [],
+        played_cards: [],
       },
       player_2: {
         username: "",
         cards: [],
+        played_cards: [],
       },
       player_3: {
         username: "",
         cards: [],
+        played_cards: [],
       },
       player_4: {
         username: "",
         cards: [],
+        played_cards: [],
       },
       player_5: {
         username: "",
         cards: [],
+        played_cards: [],
       },
       player_6: {
         username: "",
         cards: [],
+        played_cards: [],
       },
     });
     setPlayerQuantity(0);
@@ -177,6 +212,7 @@ export const GameProvider = ({children}: Props) => {
         setIsGameJoined(false);
         setIsGameCreated(false);
         clearGame();
+        setCurrentPlayer("");
       } else {
         console.log(res.data);
       }
@@ -192,6 +228,7 @@ export const GameProvider = ({children}: Props) => {
 
     if (res.status === "OK") {
       setGame(res.data);
+      setCurrentPlayer(checkCurrentPlayer(res.data));
       if (res.data.status === "Playing") setIsGameJoined(true);
     } else {
       console.log(res.data);
@@ -212,6 +249,29 @@ export const GameProvider = ({children}: Props) => {
     return res;
   };
 
+  const checkCurrentPlayer = (game: Game) => {
+    if (game.player_1.username === player.username) return "player_1";
+    if (game.player_2.username === player.username) return "player_2";
+    if (game.player_3.username === player.username) return "player_3";
+    if (game.player_4.username === player.username) return "player_4";
+    if (game.player_5.username === player.username) return "player_5";
+    if (game.player_6.username === player.username) return "player_6";
+
+    return "";
+  };
+
+  const playerPlayCard = async (card: string) => {
+    const res = await playCard(game.id, player.token, currentPlayer, card);
+
+    if (res.status === "OK") {
+      setGame(res.data);
+    } else {
+      console.log(res.data);
+    }
+
+    return res;
+  };
+
   return (
     <GameContext.Provider
       value={{
@@ -219,10 +279,12 @@ export const GameProvider = ({children}: Props) => {
         isGameCreated,
         isGameJoined,
         playerQuantity,
+        currentPlayer,
         clearGame,
         leave,
         playerCreateGame,
         playerJoinGame,
+        playerPlayCard,
         checkGame,
         deal,
       }}

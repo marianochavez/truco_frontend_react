@@ -102,7 +102,7 @@ export const Home = () => {
         )}
         {/* MOSTRAR ID DE PARTIDA CREADA */}
         {isLogged && !isGameJoined && isGameCreated && (
-          <Box border={"2px"} padding={2}>
+          <Box border={"1px"} borderRadius={"2px"} padding={2}>
             <Text color={"yellow.800"}>ID de la partida: {`${game.id}`}</Text>
             <Text>Esperando jugadores...</Text>
           </Box>

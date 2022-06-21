@@ -23,10 +23,10 @@ export const createGame = async (token: string, playerQuantity: number): Promise
   }
 };
 
-export const joinGame = async (token: string, idBoard: number): Promise<Response> => {
+export const joinGame = async (token: string, gameId: number): Promise<Response> => {
   try {
     const response = await axios.put(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/games/${idBoard}/join-game`,
+      `${import.meta.env.VITE_REACT_APP_API_URL}/games/${gameId}/join-game`,
       {},
       {
         headers: {
@@ -41,10 +41,10 @@ export const joinGame = async (token: string, idBoard: number): Promise<Response
   }
 };
 
-export const leaveGame = async (boardId: number, token: string): Promise<Response> => {
+export const leaveGame = async (gameId: number, token: string): Promise<Response> => {
   try {
     const response = await axios.put(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/games/${boardId}/leave`,
+      `${import.meta.env.VITE_REACT_APP_API_URL}/games/${gameId}/leave`,
       {},
       {
         headers: {
@@ -59,9 +59,9 @@ export const leaveGame = async (boardId: number, token: string): Promise<Respons
   }
 };
 
-export const showGame = async (boardId: number, token: string): Promise<Response> => {
+export const showGame = async (gameId: number, token: string): Promise<Response> => {
   try {
-    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/games/${boardId}`, {
+    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/games/${gameId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -73,11 +73,37 @@ export const showGame = async (boardId: number, token: string): Promise<Response
   }
 };
 
-export const dealCards = async (boardId: number, token: string): Promise<Response> => {
+export const dealCards = async (gameId: number, token: string): Promise<Response> => {
   try {
     const response = await axios.put(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/games/${boardId}/deal`,
+      `${import.meta.env.VITE_REACT_APP_API_URL}/games/${gameId}/deal`,
       {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};
+
+export const playCard = async (
+  gameId: number,
+  token: string,
+  player: string,
+  card: string,
+): Promise<Response> => {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_REACT_APP_API_URL}/games/${gameId}/play-card`,
+      {
+        player: player,
+        card: card,
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`,
