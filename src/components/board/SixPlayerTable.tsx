@@ -1,149 +1,371 @@
-import {Box, Button, Flex, Grid, GridItem, Image, Spacer, Text} from "@chakra-ui/react";
-import React from "react";
-import {useContext} from "react";
-import {Navigate} from "react-router-dom";
+import {Box, Button, Flex, Grid, GridItem, HStack, Text} from "@chakra-ui/react";
+import {AiOutlineUser} from "react-icons/ai";
 
-import {GameContext} from "../../providers/GameProvider";
-import {PlayerContext} from "../../providers/PlayerProvider";
+import {Game} from "../../providers/GameProvider";
+import {Player} from "../../providers/PlayerProvider";
 
-export const SixPlayerTable = () => {
-  const {game, currentPlayer, isGameCreated, isGameJoined, deal} = useContext(GameContext);
-  const {player} = useContext(PlayerContext);
-  const {id: idCurrent} = currentPlayer;
+import {Card} from "./Card";
 
-  const handleDealCards = async () => {
-    await deal(game.id, player.token);
-  };
+interface Props {
+  game: Game;
+  player: Player;
+  currentPl: string;
+  handleDealCards: () => void;
+  handlePlayCard: (card: string) => void;
+}
 
-  if (!isGameCreated || !isGameJoined) {
-    return <Navigate replace to="/" />;
-  }
+export const SixPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard}: Props) => {
+  const currentPlayer: any = game[currentPl as keyof Game];
 
   return (
     <>
       <Box>
-        <Grid gap={2} marginTop={2} templateColumns="repeat(6, 1fr)" templateRows="repeat(8, 1fr)">
-          <GridItem bg="yellow" colSpan={1} rowSpan={1} />
-          <GridItem bg="red" colSpan={4} rowSpan={1}>
-            <Flex>
+        <Grid gap={2} marginTop={2} p={4} templateColumns="repeat(6, 1fr)">
+          {/* ----------------------------------- */}
+          <GridItem colSpan={1} rowSpan={1} />
+          {/* ----------------------------------- */}
+          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={4} rowSpan={1}>
+            <Text
+              alignContent={"center"}
+              color={"orange.200"}
+              display={"flex"}
+              fontSize={"2xl"}
+              justifyContent={"center"}
+            >
+              <AiOutlineUser fontSize="2rem" />
+              {game.player_2.username}
+            </Text>
+            <Flex alignItems={"center"} justifyContent={"center"}>
               <Box p={4}>
-                {/* <Image
-                  src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${game.player_1.cards[0]}`}
-                /> */}
-                2
+                {game.player_2.played_cards[0] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_2.played_cards[0]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
               </Box>
-              <Spacer />
-              <Box p={4}>2</Box>
-              <Spacer />
-              <Box p={4}>2</Box>
+              <Box p={4}>
+                {game.player_2.played_cards[1] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_2.played_cards[1]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
+              <Box p={4}>
+                {game.player_2.played_cards[2] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_2.played_cards[2]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
             </Flex>
           </GridItem>
-          <GridItem bg="yellow" colSpan={1} rowSpan={1} />
+          {/* ----------------------------------- */}
+          <GridItem colSpan={1} rowSpan={1} />
+          {/* ----------------------------------- */}
+          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={1} rowSpan={1}>
+            <Text
+              alignContent={"center"}
+              color={"orange.200"}
+              display={"flex"}
+              fontSize={"2xl"}
+              justifyContent={"center"}
+            >
+              <AiOutlineUser fontSize="2rem" />
+              {game.player_3.username}
+            </Text>
+            <Flex alignItems={"center"} flexDir={"column"} justifyContent={"center"}>
+              <Box p={4}>
+                {game.player_3.played_cards[0] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_3.played_cards[0]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
+              <Box p={4}>
+                {game.player_3.played_cards[1] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_3.played_cards[1]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
+              <Box p={4}>
+                {game.player_3.played_cards[2] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_3.played_cards[2]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
+            </Flex>
+          </GridItem>
 
-          <GridItem bg="red" colSpan={1} rowSpan={1}>
-            <Flex flexDir={"column"}>
-              <Box p={4}>3</Box>
-              <Spacer />
-              <Box p={4}>3</Box>
-              <Spacer />
-              <Box p={4}>3</Box>
-            </Flex>
-          </GridItem>
+          {/* ----------------------------------- */}
           <GridItem
             alignItems={"center"}
-            bg="yellow"
             colSpan={4}
             display={"flex"}
             justifyContent={"center"}
             rowSpan={2}
           >
-            <Button colorScheme={"twitter"} size={"lg"} onClick={handleDealCards}>
+            <Button colorScheme={"orange"} size={"lg"} onClick={handleDealCards}>
               Repartir
             </Button>
           </GridItem>
-          <GridItem bg="red" colSpan={1} rowSpan={1}>
-            <Flex flexDir={"column"}>
-              <Box p={4}>6</Box>
-              <Spacer />
-              <Box p={4}>6</Box>
-              <Spacer />
-              <Box p={4}>6</Box>
+          {/* ----------------------------------- */}
+          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={1} rowSpan={1}>
+            <Text
+              alignContent={"center"}
+              color={"orange.200"}
+              display={"flex"}
+              fontSize={"2xl"}
+              justifyContent={"center"}
+            >
+              <AiOutlineUser fontSize="2rem" />
+              {game.player_5.username}
+            </Text>
+            <Flex alignItems={"center"} flexDir={"column"} justifyContent={"center"}>
+              <Box p={4}>
+                {game.player_5.played_cards[0] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_5.played_cards[0]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
+              <Box p={4}>
+                {game.player_5.played_cards[1] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_5.played_cards[1]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
+              <Box p={4}>
+                {game.player_5.played_cards[2] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_5.played_cards[2]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
             </Flex>
           </GridItem>
-
-          <GridItem bg="red" colSpan={1} rowSpan={1}>
-            <Flex flexDir={"column"}>
-              <Box p={4}>4</Box>
-              <Spacer />
-              <Box p={4}>4</Box>
-              <Spacer />
-              <Box p={4}>4</Box>
+          {/* ----------------------------------- */}
+          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={1} rowSpan={1}>
+            <Text
+              alignContent={"center"}
+              color={"orange.200"}
+              display={"flex"}
+              fontSize={"2xl"}
+              justifyContent={"center"}
+            >
+              <AiOutlineUser fontSize="2rem" />
+              {game.player_6.username}
+            </Text>
+            <Flex alignItems={"center"} flexDir={"column"} justifyContent={"center"}>
+              <Box p={4}>
+                {game.player_6.played_cards[0] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_6.played_cards[0]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
+              <Box p={4}>
+                {game.player_6.played_cards[1] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_6.played_cards[1]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
+              <Box p={4}>
+                {game.player_6.played_cards[2] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_6.played_cards[2]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
             </Flex>
           </GridItem>
-          <GridItem bg="red" colSpan={1} rowSpan={1}>
-            <Flex flexDir={"column"}>
-              <Box p={4}>5</Box>
-              <Spacer />
-              <Box p={4}>5</Box>
-              <Spacer />
-              <Box p={4}>5</Box>
+          {/* ----------------------------------- */}
+          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={1} rowSpan={1}>
+            <Text
+              alignContent={"center"}
+              color={"orange.200"}
+              display={"flex"}
+              fontSize={"2xl"}
+              justifyContent={"center"}
+            >
+              <AiOutlineUser fontSize="2rem" />
+              {game.player_4.username}
+            </Text>
+            <Flex alignItems={"center"} flexDir={"column"} justifyContent={"center"}>
+              <Box p={4}>
+                {game.player_4.played_cards[0] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_4.played_cards[0]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
+              <Box p={4}>
+                {game.player_4.played_cards[1] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_4.played_cards[1]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
+              <Box p={4}>
+                {game.player_4.played_cards[2] ? (
+                  <Card
+                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
+                      game.player_4.played_cards[2]
+                    }`}
+                  />
+                ) : (
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
+                )}
+              </Box>
             </Flex>
           </GridItem>
-
-          <GridItem bg="yellow" colSpan={1} rowSpan={1} />
-          <GridItem bg="red" colSpan={4} rowSpan={1}>
-            <Flex>
+          {/* ----------------------------------- */}
+          <GridItem colSpan={1} rowSpan={1} />
+          {/* ----------------------------------- */}
+          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={4} rowSpan={1}>
+            <Flex alignItems={"center"} justifyContent={"center"}>
               <Box p={4}>
                 {game.player_1.played_cards[0] ? (
-                  <Image
+                  <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
                       game.player_1.played_cards[0]
                     }`}
-                    w={20}
                   />
                 ) : (
-                  <Image
-                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`}
-                    w={20}
-                  />
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
                 )}
               </Box>
-              <Spacer />
               <Box p={4}>
                 {game.player_1.played_cards[1] ? (
-                  <Image
+                  <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
                       game.player_1.played_cards[1]
                     }`}
-                    w={20}
                   />
                 ) : (
-                  <Image
-                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`}
-                    w={20}
-                  />
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
                 )}
               </Box>
-              <Spacer />
               <Box p={4}>
                 {game.player_1.played_cards[2] ? (
-                  <Image
+                  <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
                       game.player_1.played_cards[2]
                     }`}
-                    w={20}
                   />
                 ) : (
-                  <Image
-                    src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`}
-                    w={20}
-                  />
+                  <Card src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/reverso.jpg`} />
                 )}
               </Box>
             </Flex>
+            <Text
+              alignContent={"center"}
+              color={"orange.200"}
+              display={"flex"}
+              fontSize={"2xl"}
+              justifyContent={"center"}
+            >
+              <AiOutlineUser fontSize="2rem" />
+              {game.player_1.username}
+            </Text>
           </GridItem>
-          <GridItem bg="yellow" colSpan={1} rowSpan={1} />
+          {/* ----------------------------------- */}
+          <GridItem colSpan={1} rowSpan={1} />
+          {/* ----------------------------------- */}
         </Grid>
+      </Box>
+
+      <Box alignContent={"center"} display={"flex"} justifyContent={"center"} p={4}>
+        <HStack bg={"orange.300"} border={"2px"} borderRadius={"5px"} p={3}>
+          {currentPlayer.cards.length === 0 ? (
+            <Text fontWeight={"bold"}>Sin cartas</Text>
+          ) : (
+            <Text fontWeight={"bold"}>Mis cartas</Text>
+          )}
+          <Box>
+            {currentPlayer.cards[0]?.length > 0 && (
+              <Card
+                src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${currentPlayer.cards[0]}`}
+                onClick={() => handlePlayCard(currentPlayer.cards[0])}
+              />
+            )}
+          </Box>
+          <Box>
+            {currentPlayer.cards[1]?.length > 0 && (
+              <Card
+                src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${currentPlayer.cards[1]}`}
+                onClick={() => handlePlayCard(currentPlayer.cards[1])}
+              />
+            )}
+          </Box>
+          <Box>
+            {currentPlayer.cards[2]?.length > 0 && (
+              <Card
+                src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${currentPlayer.cards[2]}`}
+                onClick={() => handlePlayCard(currentPlayer.cards[2])}
+              />
+            )}
+          </Box>
+        </HStack>
       </Box>
     </>
   );

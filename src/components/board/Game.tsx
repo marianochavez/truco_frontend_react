@@ -26,7 +26,15 @@ export const Game = () => {
   }
 
   if (game.player_quantity === "Six") {
-    return <SixPlayerTable />;
+    return (
+      <SixPlayerTable
+        currentPl={currentPlayer}
+        game={game}
+        handleDealCards={handleDealCards}
+        handlePlayCard={handlePlayCard}
+        player={player}
+      />
+    );
   } else if (game.player_quantity === "Fourth") {
     return (
       <FourthPlayerTable

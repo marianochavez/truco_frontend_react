@@ -21,13 +21,14 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
     <>
       <Box>
         <Grid
+          className="animate__animated animate__fadeIn animate__slower"
           gap={2}
           gridTemplateRows={"1fr 50px 1fr"}
           marginTop={2}
-          templateColumns="repeat(6, 1fr)"
+          templateColumns="repeat(4, 1fr)"
         >
           <GridItem colSpan={1} rowSpan={1} />
-          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={4} rowSpan={1}>
+          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={2} rowSpan={1}>
             <Text
               alignContent={"center"}
               color={"orange.200"}
@@ -89,7 +90,7 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
           </GridItem>
 
           <GridItem colSpan={1} rowSpan={1} />
-          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={4} rowSpan={1}>
+          <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={2} rowSpan={1}>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Box p={4}>
                 {game.player_1.played_cards[0] ? (
@@ -140,7 +141,13 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
         </Grid>
       </Box>
 
-      <Box alignContent={"center"} display={"flex"} justifyContent={"center"} p={4}>
+      <Box
+        alignContent={"center"}
+        className="animate__animated animate__fadeIn animate__slower"
+        display={"flex"}
+        justifyContent={"center"}
+        p={4}
+      >
         <HStack bg={"orange.300"} border={"2px"} borderRadius={"5px"} p={3}>
           {currentPlayer.cards.length === 0 ? (
             <Text fontWeight={"bold"}>Sin cartas</Text>

@@ -13,6 +13,7 @@ import {
   useDisclosure,
   Avatar,
   HStack,
+  Image,
 } from "@chakra-ui/react";
 import {HamburgerIcon, CloseIcon} from "@chakra-ui/icons";
 import {useContext} from "react";
@@ -58,11 +59,18 @@ export default function Appbar() {
           </Flex>
           <Flex flex={{base: 1}} justify={{base: "center", md: "start"}}>
             <Text
-              color={useColorModeValue("gray.800", "white")}
+              alignItems={"center"}
+              className="animate__animated animate__lightSpeedInLeft"
+              color={"gray.500"}
+              display={"flex"}
               fontFamily={"heading"}
+              fontWeight={"bold"}
+              justifyContent={"center"}
               textAlign={useBreakpointValue({base: "center", md: "left"})}
             >
+              <Image mr={2} src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/1e.jpg`} w={5} />
               TRUCO
+              <Image ml={2} src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/1b.jpg`} w={5} />
             </Text>
 
             <Flex display={{base: "none", md: "flex"}} ml={10}>
@@ -82,7 +90,7 @@ export default function Appbar() {
                   _hover={{
                     bg: "pink.300",
                   }}
-                  bg={"pink.400"}
+                  bg={"orange.400"}
                   color={"white"}
                   display={{base: "none", md: "inline-flex"}}
                   fontSize={"sm"}
