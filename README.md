@@ -4,7 +4,7 @@ Juego Truco creado con React en Vite utilizando typescript, react-router-dom, Ch
 
 ## Deploy
 
-Vercel: https://tateti-react-rails.vercel.app/
+Vercel: https://truco-frontend-react.vercel.app/
 
 Usuarios de prueba:
   - **Username:** test
@@ -13,7 +13,7 @@ Usuarios de prueba:
   - **Username:** test4
   - **Password:** qweasd
 
-> :warning: **Si el juego no responde**: Esperar unos segundos hasta que inicie el backend en Heroku!
+> :warning: **Si el juego no responde**: Esperar unos segundos hasta que inicie el backend en Railway!
 
 ## Install and run
 
