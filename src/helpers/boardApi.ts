@@ -23,11 +23,13 @@ export const createGame = async (token: string, playerQuantity: number): Promise
   }
 };
 
-export const joinGame = async (token: string, gameId: number): Promise<Response> => {
+export const joinGame = async (token: string, gameId: number, team: number): Promise<Response> => {
   try {
     const response = await axios.put(
       `${import.meta.env.VITE_REACT_APP_API_URL}/games/${gameId}/join-game`,
-      {},
+      {
+        team: team,
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`,

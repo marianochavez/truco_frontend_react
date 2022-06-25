@@ -12,6 +12,10 @@ export interface PlayerGame {
   played_cards: string[];
 }
 
+export interface Member {
+  member: "player_1" | "player_2" | "player_3" | "player_4" | "player_5" | "player_6" | null;
+}
+
 export interface Game {
   id: number;
   cards: string[];
@@ -24,6 +28,8 @@ export interface Game {
   player_4: PlayerGame;
   player_5: PlayerGame;
   player_6: PlayerGame;
+  team_1: Member[];
+  team_2: Member[];
 }
 
 interface GameContext {
@@ -34,7 +40,7 @@ interface GameContext {
   clearGame: () => void;
   leave: (token: string) => Promise<Response>;
   playerCreateGame: (token: string, playerQuantity: number) => Promise<Response>;
-  playerJoinGame: (token: string, idBoard: number) => Promise<Response>;
+  playerJoinGame: (token: string, idBoard: number, team: number) => Promise<Response>;
   playerPlayCard: (card: string) => Promise<Response>;
   checkGame: (token: string) => Promise<Response>;
   deal: (idBoard: number, token: string) => Promise<Response>;
@@ -81,6 +87,8 @@ export const GameContext = createContext<GameContext>({
       cards: [],
       played_cards: [],
     },
+    team_1: [],
+    team_2: [],
   },
   isGameCreated: false,
   isGameJoined: false,
@@ -143,8 +151,8 @@ export const GameProvider = ({children}: Props) => {
     return res;
   };
 
-  const playerJoinGame = async (token: string, idBoard: number) => {
-    const res = await joinGame(token, idBoard);
+  const playerJoinGame = async (token: string, idBoard: number, team: number) => {
+    const res = await joinGame(token, idBoard, team);
 
     if (res.status === "OK") {
       setGame(res.data);
@@ -196,6 +204,8 @@ export const GameProvider = ({children}: Props) => {
         cards: [],
         played_cards: [],
       },
+      team_1: [],
+      team_2: [],
     });
   };
 

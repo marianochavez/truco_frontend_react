@@ -89,9 +89,6 @@ export default function Appbar() {
               </LinkRouter>
               <LinkRouter to="/register">
                 <Button
-                  _hover={{
-                    bg: "pink.300",
-                  }}
                   colorScheme={"yellow"}
                   display={{base: "none", md: "inline-flex"}}
                   fontSize={"sm"}
