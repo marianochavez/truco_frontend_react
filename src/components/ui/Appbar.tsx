@@ -13,12 +13,11 @@ import {
   useDisclosure,
   Avatar,
   HStack,
-  Image,
+  Tag,
 } from "@chakra-ui/react";
 import {HamburgerIcon, CloseIcon} from "@chakra-ui/icons";
 import {useContext} from "react";
-import {Link as LinkRouter, Outlet, useLocation} from "react-router-dom";
-import {AiOutlineUser} from "react-icons/ai";
+import {Link, Link as LinkRouter, Outlet, useLocation} from "react-router-dom";
 
 import {PlayerContext} from "../../providers/PlayerProvider";
 import {GameContext} from "../../providers/GameProvider";
@@ -58,24 +57,27 @@ export default function Appbar() {
             />
           </Flex>
           <Flex flex={{base: 1}} justify={{base: "center", md: "start"}}>
-            <Text
-              alignItems={"center"}
-              className="animate__animated animate__lightSpeedInLeft"
-              color={"gray.500"}
-              display={"flex"}
-              fontFamily={"heading"}
-              fontWeight={"bold"}
-              justifyContent={"center"}
-              textAlign={useBreakpointValue({base: "center", md: "left"})}
-            >
-              <Image mr={2} src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/1e.jpg`} w={5} />
-              TRUCO
-              <Image ml={2} src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/1b.jpg`} w={5} />
-            </Text>
+            <Link to="/">
+              <Text
+                alignItems={"center"}
+                className="animate__animated animate__lightSpeedInLeft"
+                color={"gray.700"}
+                display={"flex"}
+                fontFamily={"heading"}
+                fontSize={{base: "lg", md: "xl"}}
+                fontWeight={"bold"}
+                justifyContent={"center"}
+                textAlign={useBreakpointValue({base: "center", md: "left"})}
+              >
+                TRUCO
+              </Text>
+            </Link>
 
-            <Flex display={{base: "none", md: "flex"}} ml={10}>
-              <DesktopNav />
-            </Flex>
+            {isLogged && (
+              <Flex display={{base: "none", md: "flex"}} ml={10}>
+                <DesktopNav />
+              </Flex>
+            )}
           </Flex>
 
           {!isLogged && currentPath === "/" && (
@@ -90,8 +92,7 @@ export default function Appbar() {
                   _hover={{
                     bg: "pink.300",
                   }}
-                  bg={"orange.400"}
-                  color={"white"}
+                  colorScheme={"yellow"}
                   display={{base: "none", md: "inline-flex"}}
                   fontSize={"sm"}
                   fontWeight={600}
@@ -103,10 +104,12 @@ export default function Appbar() {
           )}
 
           {isLogged && (
-            <HStack>
-              <Avatar bg="green.300" icon={<AiOutlineUser fontSize="1.5rem" />} size={"sm"} />
-              <Text fontWeight={"bold"}>{player.username}</Text>
-              <Button colorScheme={"orange"} variant={"ghost"} onClick={handleLogout}>
+            <HStack border={"px"}>
+              <Avatar name={player.name} size={"sm"} src={player.avatar} />
+              <Tag colorScheme="blackAlpha" fontWeight={"bold"} size="md" variant="solid">
+                {player.name}
+              </Tag>
+              <Button colorScheme={"yellow"} size="sm" variant={"solid"} onClick={handleLogout}>
                 Salir
               </Button>
             </HStack>

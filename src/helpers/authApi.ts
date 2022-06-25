@@ -19,16 +19,25 @@ export const getPlayer = async (): Promise<Response> => {
 export const createPlayer = async (
   username: string,
   name: string,
+  image: File | null,
   password: string,
   confirmPassword: string,
 ): Promise<Response> => {
+  const formData = new FormData();
+
+  formData.append("username", username);
+  formData.append("name", name);
+  formData.append("password", password);
+  formData.append("confirmPassword", confirmPassword);
+  if (image) {
+    formData.append("avatar", image);
+  }
+
   try {
-    const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/players`, {
-      username,
-      name,
-      password,
-      confirmPassword,
-    });
+    const response = await axios.post(
+      `${import.meta.env.VITE_REACT_APP_API_URL}/players`,
+      formData,
+    );
 
     return response.data;
   } catch (error: any) {

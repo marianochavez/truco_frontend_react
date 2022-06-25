@@ -10,6 +10,7 @@ import {
   Button,
   Heading,
   Text,
+  Container,
 } from "@chakra-ui/react";
 import {Link, useNavigate} from "react-router-dom";
 import {useContext, useState} from "react";
@@ -34,21 +35,32 @@ export default function Register() {
     lPassword: "",
     lConfirmPassword: "",
   } as RegisterFormProps);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const {register} = useContext(PlayerContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const {lUsername, lName, lPassword, lConfirmPassword} = formValues as RegisterFormProps;
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     if (lPassword !== lConfirmPassword) {
       setError("Las contraseñas no coinciden");
 
       return;
     }
-    const res = await register(lUsername, lName, lPassword, lConfirmPassword);
 
+    const res = await register(lUsername, lName, selectedFile, lPassword, lConfirmPassword);
+
+    setIsLoading(false);
     if (res.status == "OK") {
       navigate("/login");
     } else {
@@ -59,102 +71,120 @@ export default function Register() {
   return (
     <>
       <Appbar />
-      <Flex align={"center"} bg={"gray.50"} justify={"center"} minH={"100vh"}>
-        <Stack maxW={"lg"} mx={"auto"} px={6} py={12} spacing={8}>
-          <Stack align={"center"}>
-            <Heading fontSize={"4xl"} textAlign={"center"}>
-              Registrarme
-            </Heading>
-            {!error && (
-              <Text color={"gray.600"} fontSize={"lg"}>
-                para disfrutar de unas partidas de truco ✌️
-              </Text>
-            )}
-            {error && (
-              <Text color={"red.500"} fontSize={"lg"}>
-                {error}
-              </Text>
-            )}
+      <Container pt={8}>
+        <Flex
+          align={"center"}
+          bg="white"
+          border="1px"
+          borderRadius="10px"
+          borderWidth="3px"
+          justify={"center"}
+          p={8}
+        >
+          <Stack maxW={"lg"} mx={"auto"} spacing={8}>
+            <Stack align={"center"}>
+              <Heading fontSize={"4xl"} textAlign={"center"}>
+                Registrarme
+              </Heading>
+              {!error && (
+                <Text color={"gray.600"} fontSize={"lg"}>
+                  para disfrutar de unas partidas de truco ✌️
+                </Text>
+              )}
+              {error && (
+                <Text color={"red.500"} fontSize={"lg"}>
+                  {error}
+                </Text>
+              )}
+            </Stack>
+            <Box bg={"white"} rounded={"lg"}>
+              <form onSubmit={(e) => handleRegister(e)}>
+                <Stack spacing={4}>
+                  <FormControl isRequired id="firstName">
+                    <FormLabel>Usuario</FormLabel>
+                    <Input
+                      required
+                      bg="gray.300"
+                      name="lUsername"
+                      type="text"
+                      value={lUsername}
+                      onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
+                    />
+                  </FormControl>
+                  <FormControl isRequired id="lastName">
+                    <FormLabel>Nombre</FormLabel>
+                    <Input
+                      required
+                      bg="gray.300"
+                      name="lName"
+                      type="text"
+                      value={lName}
+                      onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
+                    />
+                  </FormControl>
+                  <FormControl id="avatar">
+                    <FormLabel>Imagen (500 x 500)</FormLabel>
+                    <Input
+                      border={"none"}
+                      type="file"
+                      onChange={handleFileChange as React.ChangeEventHandler<HTMLInputElement>}
+                    />
+                  </FormControl>
+                  <FormControl isRequired id="password">
+                    <FormLabel>Contraseña</FormLabel>
+                    <InputGroup>
+                      <Input
+                        bg="gray.300"
+                        name="lPassword"
+                        type={showPassword ? "text" : "password"}
+                        value={lPassword}
+                        onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
+                      />
+                      <InputRightElement h={"full"}>
+                        <Button
+                          variant={"ghost"}
+                          onClick={() => setShowPassword((showPassword) => !showPassword)}
+                        >
+                          {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                  </FormControl>
+                  <FormControl isRequired id="password">
+                    <FormLabel>Password</FormLabel>
+                    <InputGroup>
+                      <Input
+                        bg="gray.300"
+                        name="lConfirmPassword"
+                        type={showPassword ? "text" : "password"}
+                        value={lConfirmPassword}
+                        onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
+                      />
+                    </InputGroup>
+                  </FormControl>
+                  <Stack pt={2} spacing={10}>
+                    <Button
+                      colorScheme="yellow"
+                      isLoading={isLoading ? true : false}
+                      loadingText={"Registrando..."}
+                      type="submit"
+                    >
+                      Registrarme
+                    </Button>
+                  </Stack>
+                  <Stack pt={6}>
+                    <Link to="/login">
+                      <Text align={"center"}>
+                        Tienes cuenta? <span style={{color: "blue"}}>Ingresar</span>
+                      </Text>
+                    </Link>
+                  </Stack>
+                </Stack>
+              </form>
+            </Box>
           </Stack>
-          <Box bg={"white"} boxShadow={"lg"} p={8} rounded={"lg"}>
-            <form onSubmit={(e) => handleRegister(e)}>
-              <Stack spacing={4}>
-                <FormControl isRequired id="firstName">
-                  <FormLabel>Usuario</FormLabel>
-                  <Input
-                    required
-                    name="lUsername"
-                    type="text"
-                    value={lUsername}
-                    onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
-                  />
-                </FormControl>
-                <FormControl isRequired id="lastName">
-                  <FormLabel>Nombre</FormLabel>
-                  <Input
-                    required
-                    name="lName"
-                    type="text"
-                    value={lName}
-                    onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
-                  />
-                </FormControl>
-                <FormControl isRequired id="password">
-                  <FormLabel>Contraseña</FormLabel>
-                  <InputGroup>
-                    <Input
-                      name="lPassword"
-                      type={showPassword ? "text" : "password"}
-                      value={lPassword}
-                      onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
-                    />
-                    <InputRightElement h={"full"}>
-                      <Button
-                        variant={"ghost"}
-                        onClick={() => setShowPassword((showPassword) => !showPassword)}
-                      >
-                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
-                <FormControl isRequired id="password">
-                  <FormLabel>Password</FormLabel>
-                  <InputGroup>
-                    <Input
-                      name="lConfirmPassword"
-                      type={showPassword ? "text" : "password"}
-                      value={lConfirmPassword}
-                      onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
-                    />
-                  </InputGroup>
-                </FormControl>
-                <Stack pt={2} spacing={10}>
-                  <Button
-                    _hover={{
-                      bg: "blue.500",
-                    }}
-                    bg={"blue.400"}
-                    color={"white"}
-                    loadingText="Submitting"
-                    size="lg"
-                    type="submit"
-                  >
-                    Registrarme
-                  </Button>
-                </Stack>
-                <Stack pt={6}>
-                  <Link to="/login">
-                    <Text align={"center"}>
-                      Tienes cuenta? <span style={{color: "blue"}}>Ingresar</span>
-                    </Text>
-                  </Link>
-                </Stack>
-              </Stack>
-            </form>
-          </Box>
-        </Stack>
-      </Flex>
+        </Flex>
+      </Container>
     </>
   );
 }

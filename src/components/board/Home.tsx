@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import {Link, useLocation} from "react-router-dom";
-import {Box, Button, Input, Select, Stack, Text, VStack} from "@chakra-ui/react";
+import {Box, Button, Container, Input, Select, Stack, Text, VStack} from "@chakra-ui/react";
 
 import {PlayerContext} from "../../providers/PlayerProvider";
 import {GameContext} from "../../providers/GameProvider";
@@ -72,77 +72,85 @@ export const Home = () => {
   return (
     <>
       <Appbar />
-      <VStack marginTop={5} spacing={2}>
-        {currentPath === "/" && (
-          <Text fontSize={"4xl"}>Bienvenido {`${player.name ? player.name : "al truco"} `}!</Text>
-        )}
-        {/* LOGIN */}
-        {!isLogged && (
-          <Box>
-            <Link to="/login">
-              <Button colorScheme={"facebook"}>Iniciar sesión</Button>
-            </Link>
-          </Box>
-        )}
-        {/* CREAR PARTIDA */}
-        {isLogged && !isGameCreated && !isGameJoined && currentPath === "/" && (
-          <Stack direction={["column", "row"]}>
-            <Select
-              name="playerQuantity"
-              placeholder="Cantidad de jugadores"
-              value={playerQuantity}
-              onChange={handleInputChange as React.ChangeEventHandler<any>}
-            >
-              <option value={2}>2</option>
-              <option value={4}>4</option>
-              <option value={6}>6</option>
-            </Select>
-            <Button colorScheme={"purple"} onClick={handleCreateGame}>
-              Crear partida
-            </Button>
-          </Stack>
-        )}
-        {/* MOSTRAR ID DE PARTIDA CREADA */}
-        {isLogged && !isGameJoined && isGameCreated && (
-          <Box border={"1px"} borderRadius={"2px"} padding={2}>
-            <Text color={"yellow.800"}>ID de la partida: {`${game.id}`}</Text>
-            <Text>Esperando jugadores...</Text>
-          </Box>
-        )}
-        {/* UNIRSE A PARTIDA */}
-        {isLogged && !isGameCreated && !isGameJoined && currentPath === "/" && (
-          <Box alignItems="center" display="flex" justifyContent="center" maxW={200}>
-            <Input
-              borderColor={error ? "red.500" : "white"}
-              id="id_field"
-              name="boardId"
-              type="number"
-              value={boardId}
-              onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
-            />
-            <Button colorScheme={"green"} marginLeft={2} onClick={handleJoinGame}>
-              Unirme
-            </Button>
-          </Box>
-        )}
-        {}
-        {/* IR AL JUEGO */}
-        {isGameCreated && isGameJoined && currentPath === "/" && (
-          <Box>
-            <Link to="/game">
-              <Button colorScheme={"purple"}>Ir al juego</Button>
-            </Link>
-          </Box>
-        )}
-        {/* LOGOUT */}
-        {isLogged && currentPath === "/" && (
-          <Box>
-            <Button colorScheme={"yellow"} onClick={handleLogout}>
-              Cerrar sesión
-            </Button>
-          </Box>
-        )}
-      </VStack>
+      <Container>
+        <VStack bg="green.300" border="2px" borderRadius="10px" marginTop={5} p={4} spacing={2}>
+          {currentPath === "/" && (
+            <Text fontSize={"4xl"} fontWeight="bold">
+              BIENVENIDO {`${player.name ? player.name : ""} `}!
+            </Text>
+          )}
+          {/* LOGIN */}
+          {!isLogged && (
+            <Box>
+              <Link to="/login">
+                <Button colorScheme={"yellow"}>Iniciar sesión</Button>
+              </Link>
+            </Box>
+          )}
+          {/* CREAR PARTIDA */}
+          {isLogged && !isGameCreated && !isGameJoined && currentPath === "/" && (
+            <Stack direction={["column", "row"]}>
+              <Select
+                bg="gray.300"
+                border="2px"
+                name="playerQuantity"
+                placeholder="Cantidad de jugadores"
+                value={playerQuantity}
+                onChange={handleInputChange as React.ChangeEventHandler<any>}
+              >
+                <option value={2}>2</option>
+                <option value={4}>4</option>
+                <option value={6}>6</option>
+              </Select>
+              <Button colorScheme={"yellow"} onClick={handleCreateGame}>
+                Crear partida
+              </Button>
+            </Stack>
+          )}
+          {/* MOSTRAR ID DE PARTIDA CREADA */}
+          {isLogged && !isGameJoined && isGameCreated && (
+            <Box bg="gray.300" border={"2px"} borderRadius={"5px"} padding={2}>
+              <Text color={"orange.900"}>ID de la partida: {`${game.id}`}</Text>
+              <Text>Esperando jugadores...</Text>
+            </Box>
+          )}
+          {/* UNIRSE A PARTIDA */}
+          {isLogged && !isGameCreated && !isGameJoined && currentPath === "/" && (
+            <Box alignItems="center" display="flex" justifyContent="center" maxW={200}>
+              <Input
+                bg="gray.300"
+                border="2px"
+                borderColor={error ? "red.500" : "white"}
+                id="id_field"
+                name="boardId"
+                type="number"
+                value={boardId}
+                onChange={handleInputChange as React.ChangeEventHandler<HTMLInputElement>}
+              />
+              <Button colorScheme={"yellow"} marginLeft={2} onClick={handleJoinGame}>
+                Unirme
+              </Button>
+            </Box>
+          )}
+          {}
+          {/* IR AL JUEGO */}
+          {isGameCreated && isGameJoined && currentPath === "/" && (
+            <Box>
+              <Link to="/game">
+                <Button colorScheme={"purple"}>Ir al juego</Button>
+              </Link>
+            </Box>
+          )}
+          {/* LOGOUT */}
+          {isLogged && currentPath === "/" && (
+            <Box>
+              <Button colorScheme={"red"} onClick={handleLogout}>
+                Cerrar sesión
+              </Button>
+            </Box>
+          )}
+        </VStack>
+      </Container>
     </>
   );
 };

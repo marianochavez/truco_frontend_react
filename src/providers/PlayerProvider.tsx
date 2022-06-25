@@ -6,9 +6,10 @@ import {createPlayer, Response, signIn, singOut} from "../helpers/authApi";
 
 export interface Player {
   id: number;
-  token: string;
-  name: string;
   username: string;
+  name: string;
+  avatar: string;
+  token: string;
 }
 
 interface Props {
@@ -23,6 +24,7 @@ interface PlayerContext {
   register: (
     username: string,
     name: string,
+    image: File | null,
     password: string,
     confirmPassword: string,
   ) => Promise<Response>;
@@ -32,6 +34,7 @@ export const PlayerContext = createContext<PlayerContext>({
   player: {
     id: 0,
     token: "",
+    avatar: "",
     name: "",
     username: "",
   },
@@ -64,6 +67,7 @@ export const PlayerProvider = ({children}: Props) => {
       setPlayer({
         id: res.data.id,
         username: res.data.username,
+        avatar: res.data.avatar,
         name: res.data.name,
         token: res.data.token,
       });
@@ -82,6 +86,7 @@ export const PlayerProvider = ({children}: Props) => {
       setPlayer({
         id: 0,
         username: "",
+        avatar: "",
         name: "",
         token: "",
       });
@@ -96,10 +101,11 @@ export const PlayerProvider = ({children}: Props) => {
   const register = async (
     username: string,
     name: string,
+    image: File | null,
     password: string,
     confirmPassword: string,
   ) => {
-    const res = await createPlayer(username, name, password, confirmPassword);
+    const res = await createPlayer(username, name, image, password, confirmPassword);
 
     if (res.status == "ERROR") {
       console.log(res.data);
