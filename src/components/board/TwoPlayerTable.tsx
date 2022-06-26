@@ -37,14 +37,14 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
               justifyContent={"center"}
             >
               <AiOutlineUser fontSize="2rem" />
-              {game.player_2.username}
+              {game.team2player2.username}
             </Text>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Box p={4}>
-                {game.player_2.played_cards[0] ? (
+                {game.team2player2.played_cards[0] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_2.played_cards[0]
+                      game.team2player2.played_cards[0]
                     }`}
                   />
                 ) : (
@@ -52,10 +52,10 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
                 )}
               </Box>
               <Box p={4}>
-                {game.player_2.played_cards[1] ? (
+                {game.team2player2.played_cards[1] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_2.played_cards[1]
+                      game.team2player2.played_cards[1]
                     }`}
                   />
                 ) : (
@@ -63,10 +63,10 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
                 )}
               </Box>
               <Box p={4}>
-                {game.player_2.played_cards[2] ? (
+                {game.team2player2.played_cards[2] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_2.played_cards[2]
+                      game.team2player2.played_cards[2]
                     }`}
                   />
                 ) : (
@@ -84,7 +84,7 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
             justifyContent={"center"}
             rowSpan={1}
           >
-            <Button colorScheme={"orange"} size={"lg"} onClick={handleDealCards}>
+            <Button colorScheme={"yellow"} size={"lg"} onClick={handleDealCards}>
               Repartir
             </Button>
           </GridItem>

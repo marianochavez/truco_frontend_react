@@ -23,7 +23,7 @@ export interface Game {
   player_quantity: string;
   round: number;
   player_1: PlayerGame;
-  player_2: PlayerGame;
+  team2player2: PlayerGame;
   player_3: PlayerGame;
   player_4: PlayerGame;
   player_5: PlayerGame;
@@ -62,7 +62,7 @@ export const GameContext = createContext<GameContext>({
       cards: [],
       played_cards: [],
     },
-    player_2: {
+    team2player2: {
       username: "",
       cards: [],
       played_cards: [],
@@ -179,7 +179,7 @@ export const GameProvider = ({children}: Props) => {
         cards: [],
         played_cards: [],
       },
-      player_2: {
+      team2player2: {
         username: "",
         cards: [],
         played_cards: [],
@@ -256,7 +256,7 @@ export const GameProvider = ({children}: Props) => {
 
   const checkCurrentPlayer = (game: Game) => {
     if (game.player_1.username === player.username) return "player_1";
-    if (game.player_2.username === player.username) return "player_2";
+    if (game.team2player2.username === player.username) return "player_2";
     if (game.player_3.username === player.username) return "player_3";
     if (game.player_4.username === player.username) return "player_4";
     if (game.player_5.username === player.username) return "player_5";

@@ -16,6 +16,13 @@ interface Props {
 
 export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard}: Props) => {
   const currentPlayer: any = game[currentPl as keyof Game];
+  let [team1player1, team1player2]: any[] = game.team_1;
+  let [team2player1, team2player2]: any[] = game.team_2;
+
+  team1player1 = game[team1player1 as keyof Game];
+  team1player2 = game[team1player2 as keyof Game];
+  team2player1 = game[team2player1 as keyof Game];
+  team2player2 = game[team2player2 as keyof Game];
 
   return (
     <>
@@ -33,14 +40,14 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
               justifyContent={"center"}
             >
               <AiOutlineUser fontSize="2rem" />
-              {game.player_2.username}
+              {team2player1.username}
             </Text>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Box p={4}>
-                {game.player_2.played_cards[0] ? (
+                {team2player1.played_cards[0] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_2.played_cards[0]
+                      team2player1.played_cards[0]
                     }`}
                   />
                 ) : (
@@ -48,10 +55,10 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
                 )}
               </Box>
               <Box p={4}>
-                {game.player_2.played_cards[1] ? (
+                {team2player1.played_cards[1] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_2.played_cards[1]
+                      team2player1.played_cards[1]
                     }`}
                   />
                 ) : (
@@ -59,10 +66,10 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
                 )}
               </Box>
               <Box p={4}>
-                {game.player_2.played_cards[2] ? (
+                {team2player1.played_cards[2] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_2.played_cards[2]
+                      team2player1.played_cards[2]
                     }`}
                   />
                 ) : (
@@ -83,14 +90,14 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
               justifyContent={"center"}
             >
               <AiOutlineUser fontSize="2rem" />
-              {game.player_3.username}
+              {team2player2.username}
             </Text>
             <Flex alignItems={"center"} flexDir={"column"} justifyContent={"center"}>
               <Box p={4}>
-                {game.player_3.played_cards[0] ? (
+                {team2player2.played_cards[0] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_3.played_cards[0]
+                      team2player2.played_cards[0]
                     }`}
                   />
                 ) : (
@@ -98,10 +105,10 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
                 )}
               </Box>
               <Box p={4}>
-                {game.player_3.played_cards[1] ? (
+                {team2player2.played_cards[1] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_3.played_cards[1]
+                      team2player2.played_cards[1]
                     }`}
                   />
                 ) : (
@@ -109,10 +116,10 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
                 )}
               </Box>
               <Box p={4}>
-                {game.player_3.played_cards[2] ? (
+                {team2player2.played_cards[2] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_3.played_cards[2]
+                      team2player2.played_cards[2]
                     }`}
                   />
                 ) : (
@@ -143,14 +150,14 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
               justifyContent={"center"}
             >
               <AiOutlineUser fontSize="2rem" />
-              {game.player_4.username}
+              {team1player2.username}
             </Text>
             <Flex alignItems={"center"} flexDir={"column"} justifyContent={"center"}>
               <Box p={4}>
-                {game.player_4.played_cards[0] ? (
+                {team1player2.played_cards[0] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_4.played_cards[0]
+                      team1player2.played_cards[0]
                     }`}
                   />
                 ) : (
@@ -158,10 +165,10 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
                 )}
               </Box>
               <Box p={4}>
-                {game.player_4.played_cards[1] ? (
+                {team1player2.played_cards[1] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_4.played_cards[1]
+                      team1player2.played_cards[1]
                     }`}
                   />
                 ) : (
@@ -169,10 +176,10 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
                 )}
               </Box>
               <Box p={4}>
-                {game.player_4.played_cards[2] ? (
+                {team1player2.played_cards[2] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_4.played_cards[2]
+                      team1player2.played_cards[2]
                     }`}
                   />
                 ) : (
@@ -187,10 +194,10 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
           <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={4} rowSpan={1}>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Box p={4}>
-                {game.player_1.played_cards[0] ? (
+                {team1player1.played_cards[0] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_1.played_cards[0]
+                      team1player1.played_cards[0]
                     }`}
                   />
                 ) : (
@@ -198,10 +205,10 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
                 )}
               </Box>
               <Box p={4}>
-                {game.player_1.played_cards[1] ? (
+                {team1player1.played_cards[1] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_1.played_cards[1]
+                      team1player1.played_cards[1]
                     }`}
                   />
                 ) : (
@@ -209,10 +216,10 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
                 )}
               </Box>
               <Box p={4}>
-                {game.player_1.played_cards[2] ? (
+                {team1player1.played_cards[2] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.player_1.played_cards[2]
+                      team1player1.played_cards[2]
                     }`}
                   />
                 ) : (
@@ -228,7 +235,7 @@ export const FourthPlayerTable = ({game, currentPl, handleDealCards, handlePlayC
               justifyContent={"center"}
             >
               <AiOutlineUser fontSize="2rem" />
-              {game.player_1.username}
+              {team1player1.username}
             </Text>
           </GridItem>
           {/* ----------------------------------- */}
