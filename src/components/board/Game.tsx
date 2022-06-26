@@ -9,8 +9,18 @@ import {SixPlayerTable} from "./SixPlayerTable";
 import {TwoPlayerTable} from "./TwoPlayerTable";
 
 export const Game = () => {
-  const {game, currentPlayer, isGameCreated, isGameJoined, deal, playerPlayCard} =
-    useContext(GameContext);
+  const {
+    game,
+    counter,
+    currentPlayer,
+    isGameCreated,
+    isGameJoined,
+    deal,
+    playerPlayCard,
+    incrementCounter,
+    decrementCounter,
+    resetCounter,
+  } = useContext(GameContext);
   const {player} = useContext(PlayerContext);
 
   const handleDealCards = async () => {
@@ -28,21 +38,29 @@ export const Game = () => {
   if (game.player_quantity === "Six") {
     return (
       <SixPlayerTable
+        counter={counter}
         currentPl={currentPlayer}
+        decrementCounter={decrementCounter}
         game={game}
         handleDealCards={handleDealCards}
         handlePlayCard={handlePlayCard}
+        incrementCounter={incrementCounter}
         player={player}
+        resetCounter={resetCounter}
       />
     );
   } else if (game.player_quantity === "Fourth") {
     return (
       <FourthPlayerTable
+        counter={counter}
         currentPl={currentPlayer}
+        decrementCounter={decrementCounter}
         game={game}
         handleDealCards={handleDealCards}
         handlePlayCard={handlePlayCard}
+        incrementCounter={incrementCounter}
         player={player}
+        resetCounter={resetCounter}
       />
     );
   }
@@ -50,11 +68,15 @@ export const Game = () => {
   return (
     <>
       <TwoPlayerTable
+        counter={counter}
         currentPl={currentPlayer}
+        decrementCounter={decrementCounter}
         game={game}
         handleDealCards={handleDealCards}
         handlePlayCard={handlePlayCard}
+        incrementCounter={incrementCounter}
         player={player}
+        resetCounter={resetCounter}
       />
     </>
   );

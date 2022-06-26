@@ -1,28 +1,55 @@
 import {Box, Button, Flex, Grid, GridItem, HStack, Text} from "@chakra-ui/react";
-import {AiOutlineUser} from "react-icons/ai";
+import {AiOutlineStar, AiOutlineUser} from "react-icons/ai";
 
-import {Game} from "../../providers/GameProvider";
+import {Counters, Game} from "../../providers/GameProvider";
 import {Player} from "../../providers/PlayerProvider";
 
 import {Card} from "./Card";
+import {Counter} from "./Counter";
 
 interface Props {
   game: Game;
   player: Player;
   currentPl: string;
+  counter: Counters;
   handleDealCards: () => void;
   handlePlayCard: (card: string) => void;
+  incrementCounter: (counter: string) => void;
+  decrementCounter: (counter: string) => void;
+  resetCounter: () => void;
 }
 
-export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard}: Props) => {
+export const TwoPlayerTable = ({
+  game,
+  currentPl,
+  counter,
+  handleDealCards,
+  handlePlayCard,
+  incrementCounter,
+  decrementCounter,
+  resetCounter,
+}: Props) => {
   const currentPlayer: any = game[currentPl as keyof Game];
 
   return (
     <>
       <Box>
+        <Text
+          alignItems="center"
+          color="yellow.200"
+          display="flex"
+          flexDir="row"
+          fontSize="2xl"
+          fontWeight="bold"
+          gap={3}
+          justifyContent="center"
+        >
+          <AiOutlineStar color="yellow" />
+          Ronda {game.round}
+          <AiOutlineStar color="yellow" />
+        </Text>
         <Grid
           className="animate__animated animate__fadeIn animate__slower"
-          gap={2}
           gridTemplateRows={"1fr 50px 1fr"}
           marginTop={2}
           templateColumns="repeat(4, 1fr)"
@@ -37,14 +64,14 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
               justifyContent={"center"}
             >
               <AiOutlineUser fontSize="2rem" />
-              {game.team2player2.username}
+              {game.player_2.username}
             </Text>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Box p={4}>
-                {game.team2player2.played_cards[0] ? (
+                {game.player_2.played_cards[0] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.team2player2.played_cards[0]
+                      game.player_2.played_cards[0]
                     }`}
                   />
                 ) : (
@@ -52,10 +79,10 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
                 )}
               </Box>
               <Box p={4}>
-                {game.team2player2.played_cards[1] ? (
+                {game.player_2.played_cards[1] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.team2player2.played_cards[1]
+                      game.player_2.played_cards[1]
                     }`}
                   />
                 ) : (
@@ -63,10 +90,10 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
                 )}
               </Box>
               <Box p={4}>
-                {game.team2player2.played_cards[2] ? (
+                {game.player_2.played_cards[2] ? (
                   <Card
                     src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${
-                      game.team2player2.played_cards[2]
+                      game.player_2.played_cards[2]
                     }`}
                   />
                 ) : (
@@ -81,12 +108,19 @@ export const TwoPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
             alignItems={"center"}
             colSpan={6}
             display={"flex"}
+            gap={4}
             justifyContent={"center"}
-            rowSpan={1}
+            rowSpan={2}
           >
             <Button colorScheme={"yellow"} size={"lg"} onClick={handleDealCards}>
               Repartir
             </Button>
+            <Counter
+              counter={counter}
+              decrementCounter={decrementCounter}
+              incrementCounter={incrementCounter}
+              resetCounter={resetCounter}
+            />
           </GridItem>
 
           <GridItem colSpan={1} rowSpan={1} />

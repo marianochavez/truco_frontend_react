@@ -1,20 +1,34 @@
 import {Box, Button, Flex, Grid, GridItem, HStack, Text} from "@chakra-ui/react";
-import {AiOutlineUser} from "react-icons/ai";
+import {AiOutlineStar, AiOutlineUser} from "react-icons/ai";
 
-import {Game} from "../../providers/GameProvider";
+import {Counters, Game} from "../../providers/GameProvider";
 import {Player} from "../../providers/PlayerProvider";
 
 import {Card} from "./Card";
+import {Counter} from "./Counter";
 
 interface Props {
   game: Game;
   player: Player;
   currentPl: string;
+  counter: Counters;
   handleDealCards: () => void;
   handlePlayCard: (card: string) => void;
+  incrementCounter: (counter: string) => void;
+  decrementCounter: (counter: string) => void;
+  resetCounter: () => void;
 }
 
-export const SixPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard}: Props) => {
+export const SixPlayerTable = ({
+  game,
+  currentPl,
+  counter,
+  handleDealCards,
+  handlePlayCard,
+  incrementCounter,
+  decrementCounter,
+  resetCounter,
+}: Props) => {
   const currentPlayer: any = game[currentPl as keyof Game];
   let [team1player1, team1player2, team1player3]: any[] = game.team_1;
   let [team2player1, team2player2, team2player3]: any[] = game.team_2;
@@ -29,6 +43,20 @@ export const SixPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
   return (
     <>
       <Box>
+        <Text
+          alignItems="center"
+          color="yellow.200"
+          display="flex"
+          flexDir="row"
+          fontSize="2xl"
+          fontWeight="bold"
+          gap={3}
+          justifyContent="center"
+        >
+          <AiOutlineStar color="yellow" />
+          Ronda {game.round}
+          <AiOutlineStar color="yellow" />
+        </Text>
         <Grid gap={2} marginTop={2} p={4} templateColumns="repeat(6, 1fr)">
           {/* ----------------------------------- */}
           <GridItem colSpan={1} rowSpan={1} />
@@ -134,14 +162,21 @@ export const SixPlayerTable = ({game, currentPl, handleDealCards, handlePlayCard
           {/* ----------------------------------- */}
           <GridItem
             alignItems={"center"}
-            colSpan={4}
+            colSpan={6}
             display={"flex"}
+            gap={4}
             justifyContent={"center"}
             rowSpan={2}
           >
-            <Button colorScheme={"orange"} size={"lg"} onClick={handleDealCards}>
+            <Button colorScheme={"yellow"} size={"lg"} onClick={handleDealCards}>
               Repartir
             </Button>
+            <Counter
+              counter={counter}
+              decrementCounter={decrementCounter}
+              incrementCounter={incrementCounter}
+              resetCounter={resetCounter}
+            />
           </GridItem>
           {/* ----------------------------------- */}
           <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={1} rowSpan={1}>

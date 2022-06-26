@@ -215,4 +215,8 @@ const NAV_ITEMS: Array<NavItem> = [
     label: "Juego",
     href: "/game",
   },
+  {
+    label: "Contador",
+    href: "/counter",
+  },
 ];

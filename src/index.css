@@ -1,5 +1,5 @@
 body{
-  background-image: url("./components/assets/cartas_2.jpg") !important;
-  background-size: contain !important;
-  background-color: #b2d4b2 !important;
+  /* background-image: url("./components/assets/cartas_2.jpg") !important; */
+  /* background-size: contain !important; */
+  background-color: rgb(117, 117, 117) !important;
 }

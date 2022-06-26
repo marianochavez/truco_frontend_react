@@ -6,6 +6,11 @@ import {createGame, joinGame, leaveGame, dealCards, showGame, playCard} from "..
 
 import {PlayerContext} from "./PlayerProvider";
 
+export interface Counters {
+  counter_1: number;
+  counter_2: number;
+}
+
 export interface PlayerGame {
   username: string;
   cards: string[];
@@ -23,7 +28,7 @@ export interface Game {
   player_quantity: string;
   round: number;
   player_1: PlayerGame;
-  team2player2: PlayerGame;
+  player_2: PlayerGame;
   player_3: PlayerGame;
   player_4: PlayerGame;
   player_5: PlayerGame;
@@ -37,6 +42,7 @@ interface GameContext {
   isGameCreated: boolean;
   isGameJoined: boolean;
   currentPlayer: string;
+  counter: Counters;
   clearGame: () => void;
   leave: (token: string) => Promise<Response>;
   playerCreateGame: (token: string, playerQuantity: number) => Promise<Response>;
@@ -44,6 +50,9 @@ interface GameContext {
   playerPlayCard: (card: string) => Promise<Response>;
   checkGame: (token: string) => Promise<Response>;
   deal: (idBoard: number, token: string) => Promise<Response>;
+  incrementCounter: (counter: string) => void;
+  decrementCounter: (counter: string) => void;
+  resetCounter: () => void;
 }
 
 interface Props {
@@ -62,7 +71,7 @@ export const GameContext = createContext<GameContext>({
       cards: [],
       played_cards: [],
     },
-    team2player2: {
+    player_2: {
       username: "",
       cards: [],
       played_cards: [],
@@ -93,6 +102,10 @@ export const GameContext = createContext<GameContext>({
   isGameCreated: false,
   isGameJoined: false,
   currentPlayer: "",
+  counter: {
+    counter_1: 0,
+    counter_2: 0,
+  },
   clearGame: () => {},
   leave: () => Promise.resolve({status: "ERROR", data: ""}),
   playerCreateGame: () => Promise.resolve({status: "ERROR", data: ""}),
@@ -100,6 +113,9 @@ export const GameContext = createContext<GameContext>({
   playerPlayCard: () => Promise.resolve({status: "ERROR", data: ""}),
   checkGame: () => Promise.resolve({status: "ERROR", data: ""}),
   deal: () => Promise.resolve({status: "ERROR", data: ""}),
+  incrementCounter: () => {},
+  decrementCounter: () => {},
+  resetCounter: () => {},
 });
 
 export const GameProvider = ({children}: Props) => {
@@ -113,6 +129,9 @@ export const GameProvider = ({children}: Props) => {
   );
   const [currentPlayer, setCurrentPlayer] = useState<string>(
     localStorage.getItem("currentPlayer") || "",
+  );
+  const [counter, setCounter] = useState<Counters>(
+    JSON.parse(localStorage.getItem("counter") || "{}"),
   );
 
   useEffect(() => {
@@ -134,6 +153,18 @@ export const GameProvider = ({children}: Props) => {
   useEffect(() => {
     localStorage.setItem("currentPlayer", currentPlayer);
   }, [currentPlayer]);
+
+  useEffect(() => {
+    const counterLocal = JSON.parse(localStorage.getItem("counter") || "{}");
+
+    if (counterLocal) {
+      setCounter(counterLocal);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("counter", JSON.stringify(counter));
+  }, [counter]);
 
   const playerCreateGame = async (token: string, playerQuantity: number) => {
     if (isGameCreated) return {status: "ERROR", data: "Game already created"};
@@ -179,7 +210,7 @@ export const GameProvider = ({children}: Props) => {
         cards: [],
         played_cards: [],
       },
-      team2player2: {
+      player_2: {
         username: "",
         cards: [],
         played_cards: [],
@@ -256,7 +287,7 @@ export const GameProvider = ({children}: Props) => {
 
   const checkCurrentPlayer = (game: Game) => {
     if (game.player_1.username === player.username) return "player_1";
-    if (game.team2player2.username === player.username) return "player_2";
+    if (game.player_2.username === player.username) return "player_2";
     if (game.player_3.username === player.username) return "player_3";
     if (game.player_4.username === player.username) return "player_4";
     if (game.player_5.username === player.username) return "player_5";
@@ -277,6 +308,27 @@ export const GameProvider = ({children}: Props) => {
     return res;
   };
 
+  const incrementCounter = (counterSel: string) => {
+    const counterValue: any = counter[counterSel as keyof Counters];
+
+    setCounter({...counter, [counterSel]: counterValue + 1});
+  };
+
+  const decrementCounter = (counterSel: string) => {
+    const counterValue: any = counter[counterSel as keyof Counters];
+
+    if (counterValue === 0) return;
+
+    setCounter({...counter, [counterSel]: counterValue - 1});
+  };
+
+  const resetCounter = () => {
+    setCounter({
+      counter_1: 0,
+      counter_2: 0,
+    });
+  };
+
   return (
     <GameContext.Provider
       value={{
@@ -284,6 +336,7 @@ export const GameProvider = ({children}: Props) => {
         isGameCreated,
         isGameJoined,
         currentPlayer,
+        counter,
         clearGame,
         leave,
         playerCreateGame,
@@ -291,6 +344,9 @@ export const GameProvider = ({children}: Props) => {
         playerPlayCard,
         checkGame,
         deal,
+        incrementCounter,
+        decrementCounter,
+        resetCounter,
       }}
     >
       {children}
