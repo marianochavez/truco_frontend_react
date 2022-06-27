@@ -1,5 +1,7 @@
-import {Box, Button, Flex, Grid, GridItem, HStack, Text} from "@chakra-ui/react";
-import {AiOutlineStar, AiOutlineUser} from "react-icons/ai";
+/* eslint-disable react-hooks/exhaustive-deps */
+import {Avatar, Box, Button, Flex, Grid, GridItem, HStack, Text} from "@chakra-ui/react";
+import {AiOutlineStar} from "react-icons/ai";
+import {useState, useEffect} from "react";
 
 import {Counters, Game} from "../../providers/GameProvider";
 import {Player} from "../../providers/PlayerProvider";
@@ -17,6 +19,7 @@ interface Props {
   incrementCounter: (counter: string) => void;
   decrementCounter: (counter: string) => void;
   resetCounter: () => void;
+  setAvatar: (username: string) => Promise<string>;
 }
 
 export const SixPlayerTable = ({
@@ -28,6 +31,7 @@ export const SixPlayerTable = ({
   incrementCounter,
   decrementCounter,
   resetCounter,
+  setAvatar,
 }: Props) => {
   const currentPlayer: any = game[currentPl as keyof Game];
   let [team1player1, team1player2, team1player3]: any[] = game.team_1;
@@ -39,6 +43,22 @@ export const SixPlayerTable = ({
   team2player1 = game[team2player1 as keyof Game];
   team2player2 = game[team2player2 as keyof Game];
   team2player3 = game[team2player3 as keyof Game];
+
+  const [team1player1avatar, setteam1player1avatar] = useState("");
+  const [team1player2avatar, setteam1player2avatar] = useState("");
+  const [team1player3avatar, setteam1player3avatar] = useState("");
+  const [team2player1avatar, setteam2player1avatar] = useState("");
+  const [team2player2avatar, setteam2player2avatar] = useState("");
+  const [team2player3avatar, setteam2player3avatar] = useState("");
+
+  useEffect(() => {
+    setAvatar(team1player1.username).then((res) => setteam1player1avatar(res));
+    setAvatar(team1player2.username).then((res) => setteam1player2avatar(res));
+    setAvatar(team1player3.username).then((res) => setteam1player3avatar(res));
+    setAvatar(team2player1.username).then((res) => setteam2player1avatar(res));
+    setAvatar(team2player2.username).then((res) => setteam2player2avatar(res));
+    setAvatar(team2player3.username).then((res) => setteam2player3avatar(res));
+  }, []);
 
   return (
     <>
@@ -69,7 +89,7 @@ export const SixPlayerTable = ({
               fontSize={"2xl"}
               justifyContent={"center"}
             >
-              <AiOutlineUser fontSize="2rem" />
+              <Avatar mr={1} size="sm" src={team2player1avatar} />
               {team2player1.username}
             </Text>
             <Flex alignItems={"center"} justifyContent={"center"}>
@@ -119,7 +139,7 @@ export const SixPlayerTable = ({
               fontSize={"2xl"}
               justifyContent={"center"}
             >
-              <AiOutlineUser fontSize="2rem" />
+              <Avatar mr={1} size="sm" src={team1player2avatar} />
               {team1player2.username}
             </Text>
             <Flex alignItems={"center"} flexDir={"column"} justifyContent={"center"}>
@@ -187,7 +207,7 @@ export const SixPlayerTable = ({
               fontSize={"2xl"}
               justifyContent={"center"}
             >
-              <AiOutlineUser fontSize="2rem" />
+              <Avatar mr={1} size="sm" src={team1player3avatar} />
               {team1player3.username}
             </Text>
             <Flex alignItems={"center"} flexDir={"column"} justifyContent={"center"}>
@@ -235,7 +255,7 @@ export const SixPlayerTable = ({
               fontSize={"2xl"}
               justifyContent={"center"}
             >
-              <AiOutlineUser fontSize="2rem" />
+              <Avatar mr={1} size="sm" src={team2player2avatar} />
               {team2player2.username}
             </Text>
             <Flex alignItems={"center"} flexDir={"column"} justifyContent={"center"}>
@@ -283,7 +303,7 @@ export const SixPlayerTable = ({
               fontSize={"2xl"}
               justifyContent={"center"}
             >
-              <AiOutlineUser fontSize="2rem" />
+              <Avatar mr={1} size="sm" src={team2player3avatar} />
               {team2player3.username}
             </Text>
             <Flex alignItems={"center"} flexDir={"column"} justifyContent={"center"}>
@@ -368,7 +388,7 @@ export const SixPlayerTable = ({
               fontSize={"2xl"}
               justifyContent={"center"}
             >
-              <AiOutlineUser fontSize="2rem" />
+              <Avatar mr={1} size="sm" src={team1player1avatar} />
               {team1player1.username}
             </Text>
           </GridItem>

@@ -1,5 +1,7 @@
-import {Box, Button, Flex, Grid, GridItem, HStack, Text} from "@chakra-ui/react";
-import {AiOutlineStar, AiOutlineUser} from "react-icons/ai";
+/* eslint-disable react-hooks/exhaustive-deps */
+import {Avatar, Box, Button, Flex, Grid, GridItem, HStack, Text} from "@chakra-ui/react";
+import {useState, useEffect} from "react";
+import {AiOutlineStar} from "react-icons/ai";
 
 import {Counters, Game} from "../../providers/GameProvider";
 import {Player} from "../../providers/PlayerProvider";
@@ -17,6 +19,7 @@ interface Props {
   incrementCounter: (counter: string) => void;
   decrementCounter: (counter: string) => void;
   resetCounter: () => void;
+  setAvatar: (username: string) => Promise<string>;
 }
 
 export const TwoPlayerTable = ({
@@ -28,8 +31,16 @@ export const TwoPlayerTable = ({
   incrementCounter,
   decrementCounter,
   resetCounter,
+  setAvatar,
 }: Props) => {
   const currentPlayer: any = game[currentPl as keyof Game];
+  const [player1avatar, setPlayer1avatar] = useState("");
+  const [player2avatar, setPlayer2avatar] = useState("");
+
+  useEffect(() => {
+    setAvatar(game.player_1.username).then((res) => setPlayer1avatar(res));
+    setAvatar(game.player_2.username).then((res) => setPlayer2avatar(res));
+  }, []);
 
   return (
     <>
@@ -63,7 +74,7 @@ export const TwoPlayerTable = ({
               fontSize={"2xl"}
               justifyContent={"center"}
             >
-              <AiOutlineUser fontSize="2rem" />
+              <Avatar mr={1} size="sm" src={player2avatar} />
               {game.player_2.username}
             </Text>
             <Flex alignItems={"center"} justifyContent={"center"}>
@@ -167,7 +178,7 @@ export const TwoPlayerTable = ({
               fontSize={"2xl"}
               justifyContent={"center"}
             >
-              <AiOutlineUser fontSize="2rem" />
+              <Avatar mr={1} size="sm" src={player1avatar} />
               {game.player_1.username}
             </Text>
           </GridItem>

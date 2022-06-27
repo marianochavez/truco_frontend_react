@@ -6,9 +6,11 @@ export interface Response {
   data: any;
 }
 
-export const getPlayer = async (): Promise<Response> => {
+export const getPlayer = async (username: string): Promise<Response> => {
   try {
-    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/players`);
+    const response = await axios.get(
+      `${import.meta.env.VITE_REACT_APP_API_URL}/players?username=${username}`,
+    );
 
     return response.data;
   } catch (error: any) {

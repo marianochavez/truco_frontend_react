@@ -1,6 +1,7 @@
 import {useContext} from "react";
 import {Navigate} from "react-router-dom";
 
+import {getPlayer} from "../../helpers/authApi";
 import {GameContext} from "../../providers/GameProvider";
 import {PlayerContext} from "../../providers/PlayerProvider";
 
@@ -31,6 +32,15 @@ export const Game = () => {
     await playerPlayCard(card);
   };
 
+  const setAvatar = async (username: string) => {
+    const res = await getPlayer(username);
+
+    // console.log(res.data[0].avatar);
+    if (res.status === "OK") {
+      return res.data[0].avatar;
+    }
+  };
+
   if (!isGameCreated || !isGameJoined) {
     return <Navigate replace to="/" />;
   }
@@ -47,6 +57,7 @@ export const Game = () => {
         incrementCounter={incrementCounter}
         player={player}
         resetCounter={resetCounter}
+        setAvatar={setAvatar as any}
       />
     );
   } else if (game.player_quantity === "Fourth") {
@@ -61,6 +72,7 @@ export const Game = () => {
         incrementCounter={incrementCounter}
         player={player}
         resetCounter={resetCounter}
+        setAvatar={setAvatar as any}
       />
     );
   }
@@ -77,6 +89,7 @@ export const Game = () => {
         incrementCounter={incrementCounter}
         player={player}
         resetCounter={resetCounter}
+        setAvatar={setAvatar as any}
       />
     </>
   );
