@@ -78,6 +78,7 @@ export default function Register() {
           border="1px"
           borderRadius="10px"
           borderWidth="3px"
+          className="animate__animated animate__fadeIn"
           justify={"center"}
           p={8}
         >

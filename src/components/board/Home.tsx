@@ -8,6 +8,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Image,
   Input,
   Select,
   Spacer,
@@ -15,7 +16,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import {GiCardPick, GiPokerHand} from "react-icons/gi";
+import {GiCardJoker, GiCardPick, GiPokerHand} from "react-icons/gi";
 
 import {PlayerContext} from "../../providers/PlayerProvider";
 import {Game, GameContext} from "../../providers/GameProvider";
@@ -93,11 +94,33 @@ export const Home = () => {
       <Appbar />
       <Container>
         {currentPath === "/" && (
-          <VStack bg="green.300" border="2px" borderRadius="10px" marginTop={5} p={4} spacing={2}>
+          <VStack
+            bg="green.300"
+            border="2px"
+            borderRadius="10px"
+            className="animate__animated animate__fadeIn animate__slower"
+            marginTop={5}
+            p={4}
+            spacing={2}
+          >
             {currentPath === "/" && (
-              <Text fontSize={"4xl"} fontWeight="bold" pb={5}>
-                BIENVENIDO {`${player.name ? player.name : ""} `}!
-              </Text>
+              <Flex alignItems="center" flexDir="row" justifyContent="center" pb={5}>
+                <Image
+                  border="1px"
+                  mr={2}
+                  src="https://res.cloudinary.com/chavedo/image/upload/v1655769658/mazo/7e.jpg"
+                  w={10}
+                />
+                <Text fontSize={"4xl"} fontWeight="bold">
+                  Bienvenido {`${player.name ? player.name : "al truco"} `}!
+                </Text>
+                <Image
+                  border="1px"
+                  ml={2}
+                  src="https://res.cloudinary.com/chavedo/image/upload/v1655769658/mazo/7o.jpg"
+                  w={10}
+                />
+              </Flex>
             )}
             {/* LOGIN */}
             {!isLogged && (
