@@ -51,12 +51,12 @@ export default function Register() {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     if (lPassword !== lConfirmPassword) {
       setError("Las contraseñas no coinciden");
 
       return;
     }
+    setIsLoading(true);
 
     const res = await register(lUsername, lName, selectedFile, lPassword, lConfirmPassword);
 
