@@ -186,7 +186,7 @@ export const SixPlayerTable = ({
           {/* ----------------------------------- */}
           <GridItem
             alignItems={"center"}
-            colSpan={6}
+            colSpan={4}
             display={"flex"}
             gap={4}
             justifyContent={"center"}

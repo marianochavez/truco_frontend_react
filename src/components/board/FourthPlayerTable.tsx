@@ -179,7 +179,7 @@ export const FourthPlayerTable = ({
           {/* ----------------------------------- */}
           <GridItem
             alignItems={"center"}
-            colSpan={6}
+            colSpan={4}
             display={"flex"}
             gap={4}
             justifyContent={"center"}
@@ -244,7 +244,7 @@ export const FourthPlayerTable = ({
             </Flex>
           </GridItem>
           {/* ----------------------------------- */}
-          <GridItem colSpan={1} rowSpan={1} />
+          <GridItem colSpan={1} rowSpan={2} />
           {/* ----------------------------------- */}
           <GridItem bg={"green.500"} border={"2px"} borderRadius={"5px"} colSpan={4} rowSpan={1}>
             <Flex alignItems={"center"} justifyContent={"center"}>

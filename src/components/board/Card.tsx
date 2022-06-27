@@ -7,5 +7,14 @@ interface Props {
 }
 
 export const Card = ({src, size = "20", onClick}: Props) => {
-  return <Image border={"1px"} borderRadius={"5px"} src={src} w={size} onClick={onClick} />;
+  return (
+    <Image
+      border={"1px"}
+      borderRadius={"5px"}
+      className="animate__animated animate__zoomIn"
+      src={src}
+      w={size}
+      onClick={onClick}
+    />
+  );
 };
