@@ -2,7 +2,16 @@
 import {createContext, useEffect, useState, useContext} from "react";
 
 import {Response} from "../helpers/authApi";
-import {createGame, joinGame, leaveGame, dealCards, showGame, playCard} from "../helpers/boardApi";
+import {
+  createGame,
+  joinGame,
+  leaveGame,
+  dealCards,
+  showGame,
+  playCard,
+  goToDeck,
+  burnCard,
+} from "../helpers/boardApi";
 
 import {PlayerContext} from "./PlayerProvider";
 
@@ -50,6 +59,8 @@ interface GameContext {
   playerPlayCard: (card: string) => Promise<Response>;
   checkGame: (token: string) => Promise<Response>;
   deal: (idBoard: number, token: string) => Promise<Response>;
+  playerGoToDeck: () => Promise<Response>;
+  playerBurnCard: (card: string) => Promise<Response>;
   incrementCounter: (counter: string) => void;
   decrementCounter: (counter: string) => void;
   resetCounter: () => void;
@@ -113,6 +124,8 @@ export const GameContext = createContext<GameContext>({
   playerPlayCard: () => Promise.resolve({status: "ERROR", data: ""}),
   checkGame: () => Promise.resolve({status: "ERROR", data: ""}),
   deal: () => Promise.resolve({status: "ERROR", data: ""}),
+  playerGoToDeck: () => Promise.resolve({status: "ERROR", data: ""}),
+  playerBurnCard: () => Promise.resolve({status: "ERROR", data: ""}),
   incrementCounter: () => {},
   decrementCounter: () => {},
   resetCounter: () => {},
@@ -175,6 +188,7 @@ export const GameProvider = ({children}: Props) => {
       setGame(res.data);
       setIsGameCreated(true);
       setCurrentPlayer(checkCurrentPlayer(res.data));
+      resetCounter();
     } else {
       console.log(res.data);
     }
@@ -189,6 +203,7 @@ export const GameProvider = ({children}: Props) => {
       setGame(res.data);
       setIsGameCreated(true);
       setCurrentPlayer(checkCurrentPlayer(res.data));
+      resetCounter();
     } else {
       console.log(res.data);
     }
@@ -249,6 +264,7 @@ export const GameProvider = ({children}: Props) => {
         setIsGameCreated(false);
         clearGame();
         setCurrentPlayer("");
+        resetCounter();
       } else {
         console.log(res.data);
       }
@@ -308,6 +324,30 @@ export const GameProvider = ({children}: Props) => {
     return res;
   };
 
+  const playerGoToDeck = async () => {
+    const res = await goToDeck(game.id, player.token, currentPlayer);
+
+    if (res.status === "OK") {
+      setGame(res.data);
+    } else {
+      console.log(res.data);
+    }
+
+    return res;
+  };
+
+  const playerBurnCard = async (card: string) => {
+    const res = await burnCard(game.id, player.token, currentPlayer, card);
+
+    if (res.status === "OK") {
+      setGame(res.data);
+    } else {
+      console.log(res.data);
+    }
+
+    return res;
+  };
+
   const incrementCounter = (counterSel: string) => {
     const counterValue: any = counter[counterSel as keyof Counters];
 
@@ -344,6 +384,8 @@ export const GameProvider = ({children}: Props) => {
         playerPlayCard,
         checkGame,
         deal,
+        playerGoToDeck,
+        playerBurnCard,
         incrementCounter,
         decrementCounter,
         resetCounter,

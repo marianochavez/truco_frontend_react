@@ -118,3 +118,53 @@ export const playCard = async (
     return error.response.data;
   }
 };
+
+export const goToDeck = async (
+  gameId: number,
+  token: string,
+  player: string,
+): Promise<Response> => {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_REACT_APP_API_URL}/games/${gameId}/go-to-deck`,
+      {
+        player: player,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};
+
+export const burnCard = async (
+  gameId: number,
+  token: string,
+  player: string,
+  card: string,
+): Promise<Response> => {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_REACT_APP_API_URL}/games/${gameId}/burn-card`,
+      {
+        player: player,
+        card: card,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};

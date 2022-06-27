@@ -20,6 +20,8 @@ interface Props {
   decrementCounter: (counter: string) => void;
   resetCounter: () => void;
   setAvatar: (username: string) => Promise<string>;
+  handleGoToDeck: () => void;
+  handleBurnCard: (card: string) => void;
 }
 
 export const TwoPlayerTable = ({
@@ -32,6 +34,8 @@ export const TwoPlayerTable = ({
   decrementCounter,
   resetCounter,
   setAvatar,
+  handleGoToDeck,
+  handleBurnCard,
 }: Props) => {
   const currentPlayer: any = game[currentPl as keyof Game];
   const [player1avatar, setPlayer1avatar] = useState("");
@@ -190,6 +194,7 @@ export const TwoPlayerTable = ({
         alignContent={"center"}
         className="animate__animated animate__fadeIn animate__slower"
         display={"flex"}
+        gap={4}
         justifyContent={"center"}
         p={4}
       >
@@ -201,29 +206,61 @@ export const TwoPlayerTable = ({
           )}
           <Box>
             {currentPlayer.cards[0]?.length > 0 && (
-              <Card
-                src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${currentPlayer.cards[0]}`}
-                onClick={() => handlePlayCard(currentPlayer.cards[0])}
-              />
+              <Flex alignItems="center" flexDir="column" gap={1} justifyContent="center">
+                <Card
+                  src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${currentPlayer.cards[0]}`}
+                  onClick={() => handlePlayCard(currentPlayer.cards[0])}
+                />
+                <Button
+                  colorScheme="orange"
+                  size="sm"
+                  onClick={() => handleBurnCard(currentPlayer.cards[0])}
+                >
+                  Quemar
+                </Button>
+              </Flex>
             )}
           </Box>
           <Box>
             {currentPlayer.cards[1]?.length > 0 && (
-              <Card
-                src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${currentPlayer.cards[1]}`}
-                onClick={() => handlePlayCard(currentPlayer.cards[1])}
-              />
+              <Flex alignItems="center" flexDir="column" gap={1} justifyContent="center">
+                <Card
+                  src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${currentPlayer.cards[1]}`}
+                  onClick={() => handlePlayCard(currentPlayer.cards[1])}
+                />
+                <Button
+                  colorScheme="orange"
+                  size="sm"
+                  onClick={() => handleBurnCard(currentPlayer.cards[1])}
+                >
+                  Quemar
+                </Button>
+              </Flex>
             )}
           </Box>
           <Box>
             {currentPlayer.cards[2]?.length > 0 && (
-              <Card
-                src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${currentPlayer.cards[2]}`}
-                onClick={() => handlePlayCard(currentPlayer.cards[2])}
-              />
+              <Flex alignItems="center" flexDir="column" gap={1} justifyContent="center">
+                <Card
+                  src={`${import.meta.env.VITE_REACT_APP_API_CLOUDINARY}/${currentPlayer.cards[2]}`}
+                  onClick={() => handlePlayCard(currentPlayer.cards[2])}
+                />
+                <Button
+                  colorScheme="orange"
+                  size="sm"
+                  onClick={() => handleBurnCard(currentPlayer.cards[2])}
+                >
+                  Quemar
+                </Button>
+              </Flex>
             )}
           </Box>
         </HStack>
+        {currentPlayer.cards.length !== 0 && (
+          <Button colorScheme={"red"} onClick={handleGoToDeck}>
+            Irse al mazo
+          </Button>
+        )}
       </Box>
     </>
   );

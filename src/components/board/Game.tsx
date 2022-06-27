@@ -21,6 +21,8 @@ export const Game = () => {
     incrementCounter,
     decrementCounter,
     resetCounter,
+    playerGoToDeck,
+    playerBurnCard,
   } = useContext(GameContext);
   const {player} = useContext(PlayerContext);
 
@@ -41,6 +43,22 @@ export const Game = () => {
     }
   };
 
+  const handleGoToDeck = async () => {
+    const res = await playerGoToDeck();
+
+    if (res.status === "OK") {
+      return res.data;
+    }
+  };
+
+  const handleBurnCard = async (card: string) => {
+    const res = await playerBurnCard(card);
+
+    if (res.status === "OK") {
+      return res.data;
+    }
+  };
+
   if (!isGameCreated || !isGameJoined) {
     return <Navigate replace to="/" />;
   }
@@ -52,7 +70,9 @@ export const Game = () => {
         currentPl={currentPlayer}
         decrementCounter={decrementCounter}
         game={game}
+        handleBurnCard={handleBurnCard}
         handleDealCards={handleDealCards}
+        handleGoToDeck={handleGoToDeck}
         handlePlayCard={handlePlayCard}
         incrementCounter={incrementCounter}
         player={player}
@@ -67,7 +87,9 @@ export const Game = () => {
         currentPl={currentPlayer}
         decrementCounter={decrementCounter}
         game={game}
+        handleBurnCard={handleBurnCard}
         handleDealCards={handleDealCards}
+        handleGoToDeck={handleGoToDeck}
         handlePlayCard={handlePlayCard}
         incrementCounter={incrementCounter}
         player={player}
@@ -84,7 +106,9 @@ export const Game = () => {
         currentPl={currentPlayer}
         decrementCounter={decrementCounter}
         game={game}
+        handleBurnCard={handleBurnCard}
         handleDealCards={handleDealCards}
+        handleGoToDeck={handleGoToDeck}
         handlePlayCard={handlePlayCard}
         incrementCounter={incrementCounter}
         player={player}
