@@ -37,7 +37,6 @@ export const Game = () => {
   const setAvatar = async (username: string) => {
     const res = await getPlayer(username);
 
-    // console.log(res.data[0].avatar);
     if (res.status === "OK") {
       return res.data[0].avatar;
     }

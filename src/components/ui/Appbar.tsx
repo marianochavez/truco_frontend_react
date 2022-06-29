@@ -102,7 +102,7 @@ export default function Appbar() {
 
           {isLogged && (
             <HStack border={"px"}>
-              <Avatar bg="gray.200" name={player.name} size={"sm"} src={player.avatar} />
+              <Avatar bg="gray.200" name={player.name} size={"md"} src={player.avatar} />
               <Tag colorScheme="blackAlpha" fontWeight={"bold"} size="md" variant="solid">
                 {player.name}
               </Tag>

@@ -16,7 +16,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import {GiCardJoker, GiCardPick, GiPokerHand} from "react-icons/gi";
+import {GiCardPick, GiPokerHand} from "react-icons/gi";
 
 import {PlayerContext} from "../../providers/PlayerProvider";
 import {Game, GameContext} from "../../providers/GameProvider";
@@ -77,7 +77,7 @@ export const Home = () => {
     await checkGame(player.token);
   };
 
-  // CHECK BOARD EVERY 5 MILISECONDS
+  // CHECK GAME EVERY 5 MILISECONDS
   useEffect(() => {
     if (isLogged && isGameCreated) {
       const interval = setInterval(() => {
@@ -197,7 +197,7 @@ export const Home = () => {
             )}
             {/* UNIRSE A PARTIDA */}
             {isLogged && !isGameCreated && !isGameJoined && currentPath === "/" && (
-              <Box alignItems="center" display="flex" justifyContent="center" pt={3}>
+              <Box alignItems="self-end" display="flex" justifyContent="center" pt={3}>
                 <FormControl>
                   <FormLabel fontWeight="bold">ID</FormLabel>
                   <Input
